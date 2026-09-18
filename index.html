@@ -500,7 +500,7 @@
 
       <div class="send-box">
         <p class="send-title">Invia i tuoi risultati</p>
-        <p class="send-hint">Inserisci il tuo nome: puoi inviare i risultati via email, oppure copiarli per incollarli manualmente (utile se il dispositivo non ha un programma di posta configurato).</p>
+        <p class="send-hint">Inserisci il tuo nome: i risultati vengono inviati automaticamente via email, oppure puoi copiarli per incollarli manualmente altrove.</p>
         <div class="field-row">
           <label for="respName">Nome e cognome</label>
           <input type="text" id="respName" autocomplete="name" placeholder="Es. Maria Rossi">
@@ -515,7 +515,7 @@
           <button class="btn btn-primary" id="sendBtn" type="button">Invia risultati via email</button>
           <button class="btn btn-ghost" id="copyBtn" type="button">Copia risultati negli appunti</button>
         </div>
-        <p class="send-status" id="sendStatus" hidden>Si è aperto il tuo programma di posta con l'email pronta: controlla e premi Invia lì per completare la registrazione.</p>
+        <p class="send-status" id="sendStatus" hidden></p>
         <p class="send-status" id="copyStatus" hidden></p>
         <textarea class="results-textarea" id="resultsTextarea" readonly hidden rows="8"></textarea>
       </div>
@@ -664,6 +664,7 @@
   ];
 
   var FORM_OWNER_EMAIL = "gilbertorovai@gmail.com";
+  var FORMSPREE_ENDPOINT = "https://formspree.io/f/xjykklba";
   var EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   var answers = new Array(QUESTIONS.length).fill(null);
@@ -767,15 +768,46 @@
     var data = validateFields();
     if (!data) return;
 
-    var subject = "Valutazione competenze Excel - " + data.name;
-    var body = buildSummaryText(data.name, data.email);
-    var mailtoUrl = "mailto:" + encodeURIComponent(FORM_OWNER_EMAIL) +
-      "?subject=" + encodeURIComponent(subject) +
-      "&body=" + encodeURIComponent(body);
-
-    window.location.href = mailtoUrl;
+    var sendBtn = document.getElementById("sendBtn");
+    var statusEl = document.getElementById("sendStatus");
     document.getElementById("copyStatus").hidden = true;
-    document.getElementById("sendStatus").hidden = false;
+
+    var originalLabel = sendBtn.textContent;
+    sendBtn.disabled = true;
+    sendBtn.textContent = "Invio in corso…";
+
+    var payload = {
+      _subject: "Valutazione competenze Excel - " + data.name,
+      nome: data.name,
+      email: data.email || "(non fornita)",
+      punteggio: lastResult.total + "/48",
+      livello: lastResult.levelName,
+      dettaglio: buildSummaryText(data.name, data.email)
+    };
+
+    fetch(FORMSPREE_ENDPOINT, {
+      method: "POST",
+      headers: { "Accept": "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(function(response){
+      sendBtn.disabled = false;
+      sendBtn.textContent = originalLabel;
+      if (!response.ok) { throw new Error("Risposta non valida da Formspree"); }
+      statusEl.textContent = "Risultati inviati con successo. Grazie!";
+      statusEl.hidden = false;
+    }).catch(function(){
+      sendBtn.disabled = false;
+      sendBtn.textContent = originalLabel;
+      statusEl.textContent = "Non sono riuscito a inviare i risultati automaticamente: si apre il tuo programma di posta come alternativa.";
+      statusEl.hidden = false;
+
+      var subject = "Valutazione competenze Excel - " + data.name;
+      var body = buildSummaryText(data.name, data.email);
+      var mailtoUrl = "mailto:" + encodeURIComponent(FORM_OWNER_EMAIL) +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+      window.location.href = mailtoUrl;
+    });
   });
 
   document.getElementById("copyBtn").addEventListener("click", function(){
