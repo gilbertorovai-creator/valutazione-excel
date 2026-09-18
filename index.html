@@ -383,6 +383,25 @@
     color: var(--accent);
     margin-top: 14px;
   }
+  .send-actions{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .results-textarea{
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--ink);
+    resize: vertical;
+  }
   .cat-row{
     display: grid;
     grid-template-columns: 1fr auto;
@@ -481,7 +500,7 @@
 
       <div class="send-box">
         <p class="send-title">Invia i tuoi risultati</p>
-        <p class="send-hint">Inserisci il tuo nome: si aprirà il tuo programma di posta con un'email già pronta da inviare, così i tuoi risultati vengono registrati.</p>
+        <p class="send-hint">Inserisci il tuo nome: puoi inviare i risultati via email, oppure copiarli per incollarli manualmente (utile se il dispositivo non ha un programma di posta configurato).</p>
         <div class="field-row">
           <label for="respName">Nome e cognome</label>
           <input type="text" id="respName" autocomplete="name" placeholder="Es. Maria Rossi">
@@ -492,8 +511,13 @@
           <input type="email" id="respEmail" autocomplete="email" placeholder="nome@esempio.it">
           <span class="field-error" id="emailError"></span>
         </div>
-        <button class="btn btn-primary" id="sendBtn" type="button">Invia risultati via email</button>
+        <div class="send-actions">
+          <button class="btn btn-primary" id="sendBtn" type="button">Invia risultati via email</button>
+          <button class="btn btn-ghost" id="copyBtn" type="button">Copia risultati negli appunti</button>
+        </div>
         <p class="send-status" id="sendStatus" hidden>Si è aperto il tuo programma di posta con l'email pronta: controlla e premi Invia lì per completare la registrazione.</p>
+        <p class="send-status" id="copyStatus" hidden></p>
+        <textarea class="results-textarea" id="resultsTextarea" readonly hidden rows="8"></textarea>
       </div>
 
       <div class="results-actions">
@@ -685,10 +709,15 @@
     document.getElementById("nameError").textContent = "";
     document.getElementById("emailError").textContent = "";
     document.getElementById("sendStatus").hidden = true;
+    document.getElementById("copyStatus").hidden = true;
+    document.getElementById("copyStatus").textContent = "";
+    var ta = document.getElementById("resultsTextarea");
+    ta.hidden = true;
+    ta.value = "";
     window.scrollTo({ top: 0, behavior: "auto" });
   });
 
-  document.getElementById("sendBtn").addEventListener("click", function(){
+  function validateFields(){
     var nameInput = document.getElementById("respName");
     var emailInput = document.getElementById("respEmail");
     var nameError = document.getElementById("nameError");
@@ -707,8 +736,11 @@
       emailError.textContent = "Controlla il formato dell'email.";
       valid = false;
     }
-    if (!valid || !lastResult) return;
+    if (!valid || !lastResult) return null;
+    return { name: name, email: email };
+  }
 
+  function buildSummaryText(name, email){
     var today = new Date().toLocaleDateString("it-IT");
     var lines = [];
     lines.push("Nome: " + name);
@@ -728,15 +760,54 @@
       var num = (i + 1 < 10 ? "0" : "") + (i + 1);
       lines.push(num + ". [" + item.cat + "] risposta " + letters[answers[i]] + " (" + (answers[i] + 1) + "/4)");
     });
+    return lines.join("\n");
+  }
 
-    var subject = "Valutazione competenze Excel - " + name;
-    var body = lines.join("\n");
+  document.getElementById("sendBtn").addEventListener("click", function(){
+    var data = validateFields();
+    if (!data) return;
+
+    var subject = "Valutazione competenze Excel - " + data.name;
+    var body = buildSummaryText(data.name, data.email);
     var mailtoUrl = "mailto:" + encodeURIComponent(FORM_OWNER_EMAIL) +
       "?subject=" + encodeURIComponent(subject) +
       "&body=" + encodeURIComponent(body);
 
     window.location.href = mailtoUrl;
+    document.getElementById("copyStatus").hidden = true;
     document.getElementById("sendStatus").hidden = false;
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", function(){
+    var data = validateFields();
+    if (!data) return;
+
+    var text = buildSummaryText(data.name, data.email);
+    var ta = document.getElementById("resultsTextarea");
+    ta.value = text;
+    ta.hidden = false;
+    ta.focus();
+    ta.select();
+
+    var statusEl = document.getElementById("copyStatus");
+    document.getElementById("sendStatus").hidden = true;
+
+    var showFallback = function(){
+      statusEl.textContent = "Ecco i risultati qui sotto, già selezionati: premi Ctrl+C (o Cmd+C su Mac) per copiarli.";
+      statusEl.hidden = false;
+    };
+    var showSuccess = function(){
+      statusEl.textContent = "Risultati copiati negli appunti. Incollali dove preferisci (email, chat, documento).";
+      statusEl.hidden = false;
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(showSuccess).catch(showFallback);
+    } else {
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      if (ok) { showSuccess(); } else { showFallback(); }
+    }
   });
 
   function renderQuestion(){
