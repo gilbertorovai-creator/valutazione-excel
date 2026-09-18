@@ -501,20 +501,22 @@
       <div class="send-box">
         <p class="send-title">Invia i tuoi risultati</p>
         <p class="send-hint">Inserisci il tuo nome: i risultati vengono inviati automaticamente via email, oppure puoi copiarli per incollarli manualmente altrove.</p>
-        <div class="field-row">
-          <label for="respName">Nome e cognome</label>
-          <input type="text" id="respName" autocomplete="name" placeholder="Es. Maria Rossi">
-          <span class="field-error" id="nameError"></span>
-        </div>
-        <div class="field-row">
-          <label for="respEmail">Email (facoltativa)</label>
-          <input type="email" id="respEmail" autocomplete="email" placeholder="nome@esempio.it">
-          <span class="field-error" id="emailError"></span>
-        </div>
-        <div class="send-actions">
-          <button class="btn btn-primary" id="sendBtn" type="button">Invia risultati via email</button>
-          <button class="btn btn-ghost" id="copyBtn" type="button">Copia risultati negli appunti</button>
-        </div>
+        <form id="resultsForm" method="POST" action="https://formspree.io/f/xjykklba">
+          <div class="field-row">
+            <label for="respName">Nome e cognome</label>
+            <input type="text" id="respName" name="name" autocomplete="name" placeholder="Es. Maria Rossi">
+            <span class="field-error" id="nameError"></span>
+          </div>
+          <div class="field-row">
+            <label for="respEmail">Email (facoltativa)</label>
+            <input type="email" id="respEmail" name="email" autocomplete="email" placeholder="nome@esempio.it">
+            <span class="field-error" id="emailError"></span>
+          </div>
+          <div class="send-actions">
+            <button class="btn btn-primary" id="sendBtn" type="submit">Invia risultati via email</button>
+            <button class="btn btn-ghost" id="copyBtn" type="button">Copia risultati negli appunti</button>
+          </div>
+        </form>
         <p class="send-status" id="sendStatus" hidden></p>
         <p class="send-status" id="copyStatus" hidden></p>
         <textarea class="results-textarea" id="resultsTextarea" readonly hidden rows="8"></textarea>
@@ -764,7 +766,8 @@
     return lines.join("\n");
   }
 
-  document.getElementById("sendBtn").addEventListener("click", function(){
+  document.getElementById("resultsForm").addEventListener("submit", function(event){
+    event.preventDefault();
     var data = validateFields();
     if (!data) return;
 
