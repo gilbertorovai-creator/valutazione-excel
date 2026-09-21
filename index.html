@@ -539,120 +539,120 @@
       cat: "Fondamenti",
       q: "Copi una formula in altre celle e vuoi che un riferimento (es. A1) non cambi mai. Come fai?",
       opts: [
-        "Non lo so / non l'ho mai fatto",
-        "Riscrivo la formula a mano in ogni cella",
-        "Uso il simbolo $ prima di riga e colonna (es. $A$1)",
-        "Uso $ solo sulla riga o solo sulla colonna, a seconda dei casi (riferimento misto)"
+        { t: "Uso $ solo sulla riga o solo sulla colonna, a seconda dei casi (riferimento misto)", p: 4 },
+        { t: "Riscrivo la formula a mano in ogni cella", p: 2 },
+        { t: "Non lo so / non l'ho mai fatto", p: 1 },
+        { t: "Uso il simbolo $ prima di riga e colonna (es. $A$1)", p: 3 }
       ]
     },
     {
       cat: "Fondamenti",
       q: "Vuoi colorare automaticamente le celle con un valore superiore a 1000. Come fai?",
       opts: [
-        "Coloro le celle a mano una per una",
-        "Ordino i dati e coloro le ultime celle",
-        "Formattazione condizionale con una regola pronta (“maggiore di”)",
-        "Formattazione condizionale con una formula personalizzata"
+        { t: "Ordino i dati e coloro le ultime celle", p: 2 },
+        { t: "Formattazione condizionale con una regola pronta (“maggiore di”)", p: 3 },
+        { t: "Formattazione condizionale con una formula personalizzata", p: 4 },
+        { t: "Coloro le celle a mano una per una", p: 1 }
       ]
     },
     {
       cat: "Fondamenti",
       q: "Hai una colonna con migliaia di righe. Come arrivi velocemente all'ultima riga piena?",
       opts: [
-        "Scorro con la rotellina del mouse",
-        "Premo Ctrl+Fine",
-        "Premo Ctrl+Freccia giù per saltare in fondo alla colonna",
-        "Uso “Vai a > Speciale” per muovermi con precisione"
+        { t: "Premo Ctrl+Fine", p: 2 },
+        { t: "Scorro con la rotellina del mouse", p: 1 },
+        { t: "Uso “Vai a > Speciale” per muovermi con precisione", p: 4 },
+        { t: "Premo Ctrl+Freccia giù per saltare in fondo alla colonna", p: 3 }
       ]
     },
     {
       cat: "Formule e funzioni",
       q: "Devi trovare un valore in una tabella e prendere un dato da un'altra colonna. Cosa usi?",
       opts: [
-        "Cerco a occhio scorrendo la tabella",
-        "CERCA.VERT (VLOOKUP)",
-        "INDICE + CONFRONTA (INDEX+MATCH)",
-        "CERCA.X (XLOOKUP) o una funzione simile più recente"
+        { t: "CERCA.X (XLOOKUP) o una funzione simile più recente", p: 4 },
+        { t: "INDICE + CONFRONTA (INDEX+MATCH)", p: 3 },
+        { t: "Cerco a occhio scorrendo la tabella", p: 1 },
+        { t: "CERCA.VERT (VLOOKUP)", p: 2 }
       ]
     },
     {
       cat: "Formule e funzioni",
       q: "Devi scrivere una formula che dia risultati diversi in base a più condizioni. Come fai?",
       opts: [
-        "Calcolo tutto a mano, senza condizioni",
-        "Uso un singolo SE (IF)",
-        "Uso più SE uno dentro l'altro (o SE.PIÙ)",
-        "Combino più funzioni logiche (SE, E, O) tenendo la formula leggibile"
+        { t: "Uso più SE uno dentro l'altro (o SE.PIÙ)", p: 3 },
+        { t: "Calcolo tutto a mano, senza condizioni", p: 1 },
+        { t: "Uso un singolo SE (IF)", p: 2 },
+        { t: "Combino più funzioni logiche (SE, E, O) tenendo la formula leggibile", p: 4 }
       ]
     },
     {
       cat: "Formule e funzioni",
       q: "Hai mai usato una formula che restituisce automaticamente più risultati in più celle insieme, senza copiarla a mano?",
       opts: [
-        "Non capisco bene cosa significhi",
-        "Ne ho sentito parlare ma non l'ho mai provata",
-        "L'ho usata qualche volta",
-        "La uso spesso (es. FILTRA, UNICI, SEQUENZA)"
+        { t: "L'ho usata qualche volta", p: 3 },
+        { t: "La uso spesso (es. FILTRA, UNICI, SEQUENZA)", p: 4 },
+        { t: "Non capisco bene cosa significhi", p: 1 },
+        { t: "Ne ho sentito parlare ma non l'ho mai provata", p: 2 }
       ]
     },
     {
       cat: "Analisi dati",
       q: "Devi riassumere migliaia di righe per categoria e periodo. Cosa usi?",
       opts: [
-        "SOMMA.SE ripetuto per ogni combinazione",
-        "Tabelle di riepilogo costruite con formule",
-        "Una Tabella Pivot",
-        "Una Tabella Pivot avanzata, con più tabelle collegate tra loro"
+        { t: "Tabelle di riepilogo costruite con formule", p: 2 },
+        { t: "Una Tabella Pivot avanzata, con più tabelle collegate tra loro", p: 4 },
+        { t: "Una Tabella Pivot", p: 3 },
+        { t: "SOMMA.SE ripetuto per ogni combinazione", p: 1 }
       ]
     },
     {
       cat: "Analisi dati",
       q: "Devi unire e pulire dati che arrivano da più file. Come procedi di solito?",
       opts: [
-        "Copio e incollo tutto a mano in un unico foglio",
-        "Uso Trova e Sostituisci e formule per sistemare i dati",
-        "Uso uno strumento di Excel che importa e pulisce i dati automaticamente (Power Query)",
-        "Uso Power Query e lo riuso su file diversi senza rifare tutto da capo"
+        { t: "Uso Power Query e lo riuso su file diversi senza rifare tutto da capo", p: 4 },
+        { t: "Copio e incollo tutto a mano in un unico foglio", p: 1 },
+        { t: "Uso uno strumento di Excel che importa e pulisce i dati automaticamente (Power Query)", p: 3 },
+        { t: "Uso Trova e Sostituisci e formule per sistemare i dati", p: 2 }
       ]
     },
     {
       cat: "Analisi dati",
       q: "Come ti accorgi se ci sono errori o cose strane in una grande quantità di dati?",
       opts: [
-        "Scorro e guardo a occhio",
-        "Uso filtri e ordinamento",
-        "Uso grafici o colori per far risaltare i pattern",
-        "Uso tabelle pivot e grafici per esplorare i dati da più punti di vista"
+        { t: "Uso filtri e ordinamento", p: 2 },
+        { t: "Uso grafici o colori per far risaltare i pattern", p: 3 },
+        { t: "Scorro e guardo a occhio", p: 1 },
+        { t: "Uso tabelle pivot e grafici per esplorare i dati da più punti di vista", p: 4 }
       ]
     },
     {
       cat: "Automazione",
       q: "Devi ripetere le stesse operazioni su più fogli ogni settimana. Cosa fai?",
       opts: [
-        "Le rifaccio ogni volta a mano",
-        "Uso Incolla speciale per velocizzare i passaggi",
-        "Registro una Macro (senza scrivere codice)",
-        "Scrivo o modifico codice VBA su misura"
+        { t: "Uso Incolla speciale per velocizzare i passaggi", p: 2 },
+        { t: "Scrivo o modifico codice VBA su misura", p: 4 },
+        { t: "Registro una Macro (senza scrivere codice)", p: 3 },
+        { t: "Le rifaccio ogni volta a mano", p: 1 }
       ]
     },
     {
       cat: "Automazione",
       q: "Sai se in Excel puoi creare una tua funzione personalizzata, con un nome a tua scelta?",
       opts: [
-        "Non sapevo si potesse fare",
-        "Ne ho sentito parlare ma non l'ho mai provato",
-        "Ho provato a farlo seguendo una guida",
-        "Lo faccio regolarmente (LAMBDA o macro personalizzate)"
+        { t: "Lo faccio regolarmente (LAMBDA o macro personalizzate)", p: 4 },
+        { t: "Non sapevo si potesse fare", p: 1 },
+        { t: "Ne ho sentito parlare ma non l'ho mai provato", p: 2 },
+        { t: "Ho provato a farlo seguendo una guida", p: 3 }
       ]
     },
     {
       cat: "Automazione",
       q: "Come colleghi dati tra file diversi, così che si aggiornino da soli?",
       opts: [
-        "Copio i valori a mano quando servono",
-        "Uso riferimenti tra fogli dello stesso file",
-        "Uso collegamenti tra cartelle di lavoro diverse",
-        "Uso strumenti che aggiornano automaticamente più fonti insieme (Power Query/Power Pivot)"
+        { t: "Uso strumenti che aggiornano automaticamente più fonti insieme (Power Query/Power Pivot)", p: 4 },
+        { t: "Uso riferimenti tra fogli dello stesso file", p: 2 },
+        { t: "Uso collegamenti tra cartelle di lavoro diverse", p: 3 },
+        { t: "Copio i valori a mano quando servono", p: 1 }
       ]
     }
   ];
@@ -761,7 +761,8 @@
     var letters = ["A", "B", "C", "D"];
     QUESTIONS.forEach(function(item, i){
       var num = (i + 1 < 10 ? "0" : "") + (i + 1);
-      lines.push(num + ". [" + item.cat + "] risposta " + letters[answers[i]] + " (" + (answers[i] + 1) + "/4)");
+      var chosen = item.opts[answers[i]];
+      lines.push(num + ". [" + item.cat + "] risposta " + letters[answers[i]] + " (" + chosen.p + "/4)");
     });
     return lines.join("\n");
   }
@@ -862,7 +863,7 @@
 
     var wrap = document.getElementById("qOptions");
     wrap.innerHTML = "";
-    item.opts.forEach(function(text, i){
+    item.opts.forEach(function(opt, i){
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
@@ -871,7 +872,7 @@
       key.className = "opt-key";
       key.textContent = letters[i];
       var label = document.createElement("span");
-      label.textContent = text;
+      label.textContent = opt.t;
       btn.appendChild(key);
       btn.appendChild(label);
       btn.addEventListener("click", function(){
@@ -891,7 +892,7 @@
     quizEl.hidden = true;
     resultsEl.hidden = false;
 
-    var total = answers.reduce(function(sum, a){ return sum + (a + 1); }, 0);
+    var total = answers.reduce(function(sum, a, i){ return sum + QUESTIONS[i].opts[a].p; }, 0);
     var level = LEVELS.find(function(l){ return total <= l.max; }) || LEVELS[LEVELS.length - 1];
 
     namebox.textContent = "B14";
@@ -905,7 +906,7 @@
     var order = [];
     QUESTIONS.forEach(function(item, i){
       if (!cats[item.cat]) { cats[item.cat] = 0; order.push(item.cat); }
-      cats[item.cat] += answers[i] + 1;
+      cats[item.cat] += item.opts[answers[i]].p;
     });
 
     var breakdown = document.getElementById("catBreakdown");
