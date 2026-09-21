@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test di livello: Corso Excel Base e Intermedio</title>
+<style>
+  :root{
+    --bg: #F5F3EC; --bg-grid: #E7E2D3; --card: #FFFFFF; --ink: #1B2621; --ink-soft: #52605A;
+    --accent: #1E6F5C; --accent-ink: #FFFFFF; --accent-soft: #E4EFEA; --amber: #C97B3D;
+    --amber-soft: #F6E7D8; --line: #DAD4C2; --shadow: 0 1px 2px rgba(27,38,33,.04), 0 8px 24px -12px rgba(27,38,33,.18);
+    --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+    --font-body: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg: #14181A; --bg-grid: #1D2320; --card: #1A211D; --ink: #E9E6DC; --ink-soft: #9AA69D;
+      --accent: #52C09B; --accent-ink: #0D1613; --accent-soft: #1E2E28; --amber: #E3A05F;
+      --amber-soft: #2E2519; --line: #2B332D; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px -16px rgba(0,0,0,.6);
+    }
+  }
+  *{ box-sizing: border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background: repeating-linear-gradient(to right, var(--bg-grid) 0 1px, transparent 1px 88px),
+      repeating-linear-gradient(to bottom, var(--bg-grid) 0 1px, transparent 1px 32px), var(--bg);
+    color: var(--ink); font-family: var(--font-body); line-height: 1.5; min-height: 100vh;
+    display: flex; justify-content: center; padding: clamp(20px, 5vw, 56px) 16px;
+  }
+  .sheet{ width: 100%; max-width: 640px; }
+  .chrome{ background: var(--card); border: 1px solid var(--line); border-bottom: none; border-radius: 12px 12px 0 0; box-shadow: var(--shadow); padding: 10px 18px; display: flex; align-items: center; gap: 14px; }
+  .namebox{ font-family: var(--font-mono); font-size: 0.75rem; font-variant-numeric: tabular-nums; letter-spacing: .02em; color: var(--ink-soft); background: var(--bg); border: 1px solid var(--line); border-radius: 5px; padding: 3px 9px; min-width: 44px; text-align: center; }
+  .fx-row{ display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; border-left: 1px solid var(--line); padding-left: 14px; }
+  .fx-badge{ font-family: var(--font-display); font-style: italic; font-size: 0.85rem; color: var(--accent); flex-shrink: 0; }
+  .fx-formula{ font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .panel{ background: var(--card); border: 1px solid var(--line); border-radius: 0 0 12px 12px; box-shadow: var(--shadow); padding: clamp(24px, 5vw, 44px); }
+  h1{ font-family: var(--font-display); font-weight: 600; font-size: clamp(1.4rem, 4vw, 1.9rem); line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 12px; text-wrap: balance; }
+  .lede{ color: var(--ink-soft); font-size: 0.98rem; max-width: 46ch; margin: 0 0 26px; }
+  .meta-row{ display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 30px; font-size: 0.82rem; color: var(--ink-soft); }
+  .meta-row strong{ color: var(--ink); font-weight: 600; }
+  .meta-row .dot::before{ content: "·"; margin-right: 18px; color: var(--line); }
+  button{ font-family: inherit; }
+  .btn{ appearance: none; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; padding: 12px 22px; cursor: pointer; transition: transform .12s ease, opacity .15s ease, background .15s ease; }
+  @media (prefers-reduced-motion: reduce){ .btn{ transition: none; } }
+  .btn-primary{ background: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover{ opacity: .92; }
+  .btn-primary:active{ transform: scale(.98); }
+  .btn-primary[aria-disabled="true"]{ opacity: .4; cursor: not-allowed; pointer-events: none; }
+  .btn-primary:disabled{ opacity: .6; cursor: wait; }
+  .btn-ghost{ background: transparent; color: var(--ink-soft); border: 1px solid var(--line); }
+  .btn-ghost:hover{ color: var(--ink); border-color: var(--ink-soft); }
+  .btn:focus-visible, .opt:focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; }
+  .progress-track{ height: 6px; background: var(--bg-grid); border-radius: 999px; overflow: hidden; margin-bottom: 8px; }
+  .progress-fill{ height: 100%; background: var(--accent); border-radius: 999px; transition: width .3s ease; }
+  @media (prefers-reduced-motion: reduce){ .progress-fill{ transition: none; } }
+  .progress-label{ display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-soft); margin-bottom: 30px; }
+  .eyebrow{ font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
+  .question{ font-family: var(--font-display); font-size: clamp(1.1rem, 3vw, 1.35rem); line-height: 1.35; margin: 0 0 22px; text-wrap: balance; }
+  .options{ display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px; }
+  .opt{ position: relative; display: flex; align-items: flex-start; gap: 12px; text-align: left; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 13px 16px; color: var(--ink); cursor: pointer; font-size: 0.94rem; }
+  .opt:hover{ border-color: var(--ink-soft); }
+  .opt-key{ font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--ink-soft); background: var(--card); border: 1px solid var(--line); border-radius: 4px; width: 20px; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  .opt[aria-pressed="true"]{ border: 2px solid var(--accent); background: var(--accent-soft); padding: 12px 15px; }
+  .opt[aria-pressed="true"] .opt-key{ background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .opt[aria-pressed="true"]::after{ content: ""; position: absolute; right: -4px; bottom: -4px; width: 7px; height: 7px; background: var(--accent); border: 1px solid var(--card); }
+  .nav-row{ display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .score-row{ display: flex; align-items: baseline; gap: 18px; margin-bottom: 6px; flex-wrap: wrap; }
+  .score-num{ font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: clamp(2.4rem, 8vw, 3.2rem); font-weight: 700; letter-spacing: -0.02em; }
+  .score-max{ font-family: var(--font-mono); color: var(--ink-soft); font-size: 1rem; }
+  .level-badge{ display: inline-flex; align-items: center; gap: 6px; background: var(--amber-soft); color: var(--amber); font-weight: 700; font-size: 0.82rem; letter-spacing: .02em; padding: 6px 13px; border-radius: 999px; margin-bottom: 20px; }
+  .level-desc{ font-size: 0.98rem; color: var(--ink-soft); max-width: 56ch; margin: 0 0 32px; }
+  .breakdown-title{ font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 14px; }
+  .send-box{ margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); }
+  .send-title{ font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; margin: 0 0 6px; }
+  .send-hint{ font-size: 0.86rem; color: var(--ink-soft); margin: 0 0 18px; max-width: 50ch; }
+  .field-row{ display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .field-row label{ font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+  .field-row input{ font-family: var(--font-body); font-size: 0.95rem; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 11px 14px; }
+  .field-row input:focus-visible{ outline: 2px solid var(--accent); outline-offset: 1px; }
+  .field-error{ font-size: 0.78rem; color: var(--amber); min-height: 1.1em; }
+  .send-status{ font-size: 0.86rem; color: var(--accent); margin-top: 14px; }
+  .send-actions{ display: flex; gap: 10px; flex-wrap: wrap; }
+  .results-textarea{ display: block; width: 100%; margin-top: 12px; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.5; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); resize: vertical; }
+  .cat-row{ display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; margin-bottom: 12px; }
+  .cat-name{ font-size: 0.85rem; }
+  .cat-score{ font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 0.78rem; color: var(--ink-soft); }
+  .cat-track{ grid-column: 1 / -1; height: 7px; background: var(--bg-grid); border-radius: 999px; overflow: hidden; }
+  .cat-fill{ height: 100%; background: var(--accent); border-radius: 999px; }
+  .results-actions{ display: flex; gap: 12px; margin-top: 34px; flex-wrap: wrap; }
+  [hidden]{ display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <div class="chrome">
+    <span class="namebox" id="namebox">A1</span>
+    <span class="fx-row">
+      <span class="fx-badge">fx</span>
+      <span class="fx-formula" id="fxFormula">="Test di livello per il corso Excel"</span>
+    </span>
+  </div>
+
+  <div class="panel">
+
+    <section id="screen-intro">
+      <h1>Test di livello: Corso Excel Base e Intermedio</h1>
+      <p class="lede">Sedici domande, due per ciascuno degli 8 moduli del corso: dall'interfaccia base fino al caso studio sui dati clienti. Il risultato mostra su quali moduli sei gi&agrave; forte e su quali conviene concentrarti in aula.</p>
+      <div class="meta-row">
+        <span><strong>16</strong> domande</span>
+        <span class="dot"><strong>~6</strong> minuti</span>
+        <span class="dot">Allineato ai moduli 1&ndash;8 del corso</span>
+      </div>
+      <button class="btn btn-primary" id="startBtn" type="button">Inizia il test</button>
+    </section>
+
+    <section id="screen-quiz" hidden>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label">
+        <span id="progressText">Domanda 1 di 16</span>
+        <span id="progressPct">0%</span>
+      </div>
+
+      <div class="eyebrow" id="qCategory">Modulo 1</div>
+      <p class="question" id="qText" role="heading" aria-level="2"></p>
+
+      <div class="options" id="qOptions" role="group" aria-label="Risposte"></div>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" id="backBtn" type="button">Indietro</button>
+        <button class="btn btn-primary" id="nextBtn" type="button" aria-disabled="true">Avanti</button>
+      </div>
+    </section>
+
+    <section id="screen-results" hidden>
+      <div class="eyebrow">Risultato</div>
+      <div class="score-row">
+        <span class="score-num" id="scoreNum">0</span>
+        <span class="score-max">/ 64 punti</span>
+      </div>
+      <div class="level-badge" id="levelBadge">Livello</div>
+      <p class="level-desc" id="levelDesc"></p>
+
+      <div class="breakdown-title">Punteggio per modulo</div>
+      <div id="catBreakdown"></div>
+
+      <div class="send-box">
+        <p class="send-title">Invia i tuoi risultati</p>
+        <p class="send-hint">Inserisci il tuo nome: i risultati vengono inviati automaticamente, oppure puoi copiarli per incollarli manualmente altrove.</p>
+        <form id="resultsForm" method="POST" action="https://formspree.io/f/xjykklba">
+          <div class="field-row">
+            <label for="respName">Nome e cognome</label>
+            <input type="text" id="respName" name="name" autocomplete="name" placeholder="Es. Maria Rossi">
+            <span class="field-error" id="nameError"></span>
+          </div>
+          <div class="field-row">
+            <label for="respEmail">Email (facoltativa)</label>
+            <input type="email" id="respEmail" name="email" autocomplete="email" placeholder="nome@esempio.it">
+            <span class="field-error" id="emailError"></span>
+          </div>
+          <div class="send-actions">
+            <button class="btn btn-primary" id="sendBtn" type="submit">Invia risultati via email</button>
+            <button class="btn btn-ghost" id="copyBtn" type="button">Copia risultati negli appunti</button>
+          </div>
+        </form>
+        <p class="send-status" id="sendStatus" hidden></p>
+        <p class="send-status" id="copyStatus" hidden></p>
+        <textarea class="results-textarea" id="resultsTextarea" readonly hidden rows="10"></textarea>
+      </div>
+
+      <div class="results-actions">
+        <button class="btn btn-ghost" id="restartBtn" type="button">Rifai il test</button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var QUESTIONS = [
+    {
+      cat: "1. Cartella di lavoro",
+      q: "Devi trovare rapidamente un comando che non usi spesso, dentro la barra multifunzione di Excel. Come procedi?",
+      opts: [
+        "Scorro tutte le schede finché non lo trovo per caso",
+        "So già in quale scheda cercarlo, tra Home/Inserisci/Dati...",
+        "Uso la casella di ricerca in alto per trovarlo per nome",
+        "Conosco anche le schede contestuali che compaiono solo in certe situazioni (es. dentro una tabella)"
+      ]
+    },
+    {
+      cat: "1. Cartella di lavoro",
+      q: "Devi salvare un file con delle macro dentro. Cosa fai?",
+      opts: [
+        "Salvo normalmente con Ctrl+S, senza pensarci",
+        "So che devo scegliere un formato diverso da .xlsx, ma non ricordo quale",
+        "Scelgo il formato .xlsm apposta per le macro",
+        "Conosco anche il salvataggio automatico su OneDrive e come recuperare un file non salvato"
+      ]
+    },
+    {
+      cat: "2. Formule di base",
+      q: "Devi calcolare una somma su una colonna di 50 numeri. Come fai?",
+      opts: [
+        "Sommo i valori a mano con una calcolatrice",
+        "Scrivo =A1+A2+A3... per ogni cella",
+        "Uso =SOMMA(A1:A50)",
+        "Uso anche Alt+= per farlo inserire automaticamente da Excel"
+      ]
+    },
+    {
+      cat: "2. Formule di base",
+      q: "Vuoi sapere quante celle di una colonna soddisfano una condizione (es. valore maggiore di 100). Cosa usi?",
+      opts: [
+        "Le conto a mano scorrendo la colonna",
+        "Uso CONTA per contare tutte le celle numeriche",
+        "Uso CONTA.SE con la condizione",
+        "So anche distinguere CONTA, CONTA.VALORI e CONTA.SE a seconda del caso"
+      ]
+    },
+    {
+      cat: "3. Gestire i dati",
+      q: "Devi ordinare un elenco di vendite mantenendo allineate tutte le colonne collegate. Cosa fai?",
+      opts: [
+        "Ordino solo la colonna che mi interessa",
+        "Seleziono tutte le colonne a mano prima di ordinare",
+        "Lavoro su una Tabella di Excel, che ordina sempre l'intera riga",
+        "Uso anche l'ordinamento su più livelli (es. prima Regione, poi Fatturato)"
+      ]
+    },
+    {
+      cat: "3. Gestire i dati",
+      q: "Vuoi un totale per ciascuna regione, su dati già ordinati per regione, senza costruire una Tabella Pivot. Cosa usi?",
+      opts: [
+        "Non saprei come fare senza una pivot",
+        "Copio i dati di ogni regione in fogli separati e sommo a mano",
+        "Uso Dati > Subtotale",
+        "So anche gestire la struttura a schema (+/-) che i Subtotali creano in automatico"
+      ]
+    },
+    {
+      cat: "4. Analizzare le vendite",
+      q: "In una tabella con la colonna Prezzo, vuoi che ogni riga calcoli automaticamente il Totale con Quantità e Prezzo di quella riga. Come scrivi la formula?",
+      opts: [
+        "Scrivo un riferimento diverso a mano su ogni riga",
+        "Uso =B2*C2 e la copio in basso",
+        "Uso i riferimenti strutturati, tipo [@Quantità]*[@Prezzo]",
+        "So anche perché i riferimenti strutturati sono più sicuri quando si spostano le colonne"
+      ]
+    },
+    {
+      cat: "4. Analizzare le vendite",
+      q: "Vuoi impedire che qualcuno scriva una regione inesistente in una colonna (es. per errore di battitura). Cosa usi?",
+      opts: [
+        "Non lo controllo, correggo gli errori quando li trovo",
+        "Scrivo un promemoria delle regioni valide da qualche parte nel foglio",
+        "Uso Dati > Convalida dati con un elenco a discesa",
+        "Uso anche messaggi di errore personalizzati nella convalida"
+      ]
+    },
+    {
+      cat: "5. Visualizzare i dati",
+      q: "Devi mostrare l'andamento del fatturato negli ultimi 6 mesi. Che grafico usi?",
+      opts: [
+        "Non uso grafici, preferisco leggere i numeri in tabella",
+        "Un grafico a colonne",
+        "Un grafico a linee",
+        "Un grafico a linee con anche una linea di tendenza aggiunta"
+      ]
+    },
+    {
+      cat: "5. Visualizzare i dati",
+      q: "Devi mostrare come il fatturato si divide tra 4 regioni. Che grafico scegli?",
+      opts: [
+        "Non saprei quale grafico sia adatto",
+        "Un grafico a colonne",
+        "Un grafico a torta",
+        "Un grafico a torta con le percentuali visibili su ogni fetta"
+      ]
+    },
+    {
+      cat: "6. Dashboard interattive",
+      q: "Devi riassumere migliaia di righe incrociando categoria e regione. Cosa usi?",
+      opts: [
+        "Formule SOMMA.SE ripetute per ogni combinazione",
+        "Una Tabella Pivot base",
+        "Una Tabella Pivot con le date raggruppate per mese/trimestre",
+        "Una Tabella Pivot con anche un campo calcolato personalizzato"
+      ]
+    },
+    {
+      cat: "6. Dashboard interattive",
+      q: "Vuoi che il foglio mostri o nasconda una sezione in base a una scelta dell'utente (es. una casella spuntata). Cosa usi?",
+      opts: [
+        "Non so come si fa",
+        "Nascondo/mostro le righe manualmente quando serve",
+        "Un controllo modulo (casella di controllo) collegato a una cella",
+        "Un controllo collegato a una cella, usato dentro una formula SE o FILTRA"
+      ]
+    },
+    {
+      cat: "7. Automatizzare operazioni",
+      q: "Devi ripetere la stessa formattazione su più fogli ogni settimana. Cosa fai?",
+      opts: [
+        "La rifaccio a mano ogni volta",
+        "Uso Incolla speciale per velocizzare",
+        "Registro una Macro e la richiamo quando serve",
+        "So anche aprire il codice della macro e correggerlo se qualcosa non va"
+      ]
+    },
+    {
+      cat: "7. Automatizzare operazioni",
+      q: "Una macro che hai registrato ha un piccolo errore (es. un colore sbagliato). Cosa fai?",
+      opts: [
+        "La cancello e la registro di nuovo da zero",
+        "Non saprei come intervenire",
+        "Apro l'editor Visual Basic e provo a leggere il codice",
+        "Modifico direttamente la riga di codice interessata"
+      ]
+    },
+    {
+      cat: "8. Dati clienti",
+      q: "Devi recuperare i dati di un cliente da una tabella, a partire dal suo ID. Cosa usi?",
+      opts: [
+        "Cerco a occhio scorrendo la tabella",
+        "CERCA.VERT",
+        "INDICE + CONFRONTA",
+        "CERCA.X"
+      ]
+    },
+    {
+      cat: "8. Dati clienti",
+      q: "Devi impostare da zero un foglio con l'elenco clienti (ID, nome, regione, totale speso) pronto per essere interrogato con formule. Come procedi?",
+      opts: [
+        "Scrivo i dati senza pensare troppo alla struttura",
+        "Uso intestazioni chiare, ma resta un intervallo semplice",
+        "Converto l'elenco in una Tabella di Excel",
+        "Uso una Tabella di Excel e verifico che gli ID siano scritti in modo coerente (tutti numeri o tutti testo)"
+      ]
+    }
+  ];
+
+  var LEVELS = [
+    { max: 25, name: "Principiante", desc: "Conosci le basi ma la maggior parte degli strumenti visti nel corso (tabelle, grafici, pivot, macro) sono ancora terreno nuovo. Il corso completo, dal modulo 1, è pensato apposta per te." },
+    { max: 35, name: "Base", desc: "Ti muovi con sicurezza su formule semplici e gestione dati, ma grafici avanzati, pivot e automazione sono ancora poco familiari. I moduli 5-8 saranno la parte più utile per te." },
+    { max: 45, name: "Intermedio", desc: "Sai già usare tabelle, grafici e pivot con una certa autonomia. I moduli su automazione (macro) e sul caso studio clienti sono probabilmente i più utili per completare il quadro." },
+    { max: 55, name: "Avanzato", desc: "Conosci bene la maggior parte degli strumenti del corso. Vale la pena concentrarsi sui moduli specifici dove il punteggio è più basso, più che seguire tutto dall'inizio." },
+    { max: 64, name: "Esperto", desc: "Padroneggi già la gran parte dei contenuti del corso. Potresti affiancare chi ha un livello più basso durante le esercitazioni, o concentrarti solo sugli approfondimenti più avanzati." }
+  ];
+
+  var FORM_OWNER_EMAIL = "gilbertorovai@gmail.com";
+  var FORMSPREE_ENDPOINT = "https://formspree.io/f/xjykklba";
+  var EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  var answers = new Array(QUESTIONS.length).fill(null);
+  var current = 0;
+  var lastResult = null;
+
+  var introEl = document.getElementById("screen-intro");
+  var quizEl = document.getElementById("screen-quiz");
+  var resultsEl = document.getElementById("screen-results");
+  var namebox = document.getElementById("namebox");
+  var fxFormula = document.getElementById("fxFormula");
+
+  document.getElementById("startBtn").addEventListener("click", function(){
+    introEl.hidden = true;
+    quizEl.hidden = false;
+    renderQuestion();
+  });
+
+  document.getElementById("backBtn").addEventListener("click", function(){
+    if (current > 0) { current--; renderQuestion(); }
+  });
+
+  document.getElementById("nextBtn").addEventListener("click", function(){
+    if (answers[current] === null) return;
+    if (current < QUESTIONS.length - 1) {
+      current++;
+      renderQuestion();
+    } else {
+      showResults();
+    }
+  });
+
+  document.getElementById("restartBtn").addEventListener("click", function(){
+    answers = new Array(QUESTIONS.length).fill(null);
+    current = 0;
+    lastResult = null;
+    resultsEl.hidden = true;
+    introEl.hidden = false;
+    namebox.textContent = "A1";
+    fxFormula.textContent = "=\"Test di livello per il corso Excel\"";
+    document.getElementById("respName").value = "";
+    document.getElementById("respEmail").value = "";
+    document.getElementById("nameError").textContent = "";
+    document.getElementById("emailError").textContent = "";
+    document.getElementById("sendStatus").hidden = true;
+    document.getElementById("copyStatus").hidden = true;
+    document.getElementById("copyStatus").textContent = "";
+    var ta = document.getElementById("resultsTextarea");
+    ta.hidden = true;
+    ta.value = "";
+    window.scrollTo({ top: 0, behavior: "auto" });
+  });
+
+  function validateFields(){
+    var nameInput = document.getElementById("respName");
+    var emailInput = document.getElementById("respEmail");
+    var nameError = document.getElementById("nameError");
+    var emailError = document.getElementById("emailError");
+    var name = nameInput.value.trim();
+    var email = emailInput.value.trim();
+
+    nameError.textContent = "";
+    emailError.textContent = "";
+    var valid = true;
+    if (!name) {
+      nameError.textContent = "Inserisci il tuo nome.";
+      valid = false;
+    }
+    if (email && !EMAIL_PATTERN.test(email)) {
+      emailError.textContent = "Controlla il formato dell'email.";
+      valid = false;
+    }
+    if (!valid || !lastResult) return null;
+    return { name: name, email: email };
+  }
+
+  function buildSummaryText(name, email){
+    var today = new Date().toLocaleDateString("it-IT");
+    var lines = [];
+    lines.push("Nome: " + name);
+    if (email) lines.push("Email: " + email);
+    lines.push("Data: " + today);
+    lines.push("Punteggio totale: " + lastResult.total + "/64");
+    lines.push("Livello: " + lastResult.levelName);
+    lines.push("");
+    lines.push("Punteggio per modulo:");
+    lastResult.catOrder.forEach(function(cat){
+      lines.push("- " + cat + ": " + lastResult.cats[cat] + "/8");
+    });
+    lines.push("");
+    lines.push("Dettaglio risposte:");
+    var letters = ["A", "B", "C", "D"];
+    QUESTIONS.forEach(function(item, i){
+      var num = (i + 1 < 10 ? "0" : "") + (i + 1);
+      lines.push(num + ". [" + item.cat + "] risposta " + letters[answers[i]] + " (" + (answers[i] + 1) + "/4)");
+    });
+    return lines.join("\n");
+  }
+
+  document.getElementById("resultsForm").addEventListener("submit", function(event){
+    event.preventDefault();
+    var data = validateFields();
+    if (!data) return;
+
+    var sendBtn = document.getElementById("sendBtn");
+    var statusEl = document.getElementById("sendStatus");
+    document.getElementById("copyStatus").hidden = true;
+
+    var originalLabel = sendBtn.textContent;
+    sendBtn.disabled = true;
+    sendBtn.textContent = "Invio in corso…";
+
+    var payload = {
+      _subject: "Test di livello corso Excel - " + data.name,
+      nome: data.name,
+      email: data.email || "(non fornita)",
+      punteggio: lastResult.total + "/64",
+      livello: lastResult.levelName,
+      dettaglio: buildSummaryText(data.name, data.email)
+    };
+
+    fetch(FORMSPREE_ENDPOINT, {
+      method: "POST",
+      headers: { "Accept": "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(function(response){
+      sendBtn.disabled = false;
+      sendBtn.textContent = originalLabel;
+      if (!response.ok) { throw new Error("Risposta non valida da Formspree"); }
+      statusEl.textContent = "Risultati inviati con successo. Grazie!";
+      statusEl.hidden = false;
+    }).catch(function(){
+      sendBtn.disabled = false;
+      sendBtn.textContent = originalLabel;
+      statusEl.textContent = "Non sono riuscito a inviare i risultati automaticamente: si apre il tuo programma di posta come alternativa.";
+      statusEl.hidden = false;
+
+      var subject = "Test di livello corso Excel - " + data.name;
+      var body = buildSummaryText(data.name, data.email);
+      var mailtoUrl = "mailto:" + encodeURIComponent(FORM_OWNER_EMAIL) +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+      window.location.href = mailtoUrl;
+    });
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", function(){
+    var data = validateFields();
+    if (!data) return;
+
+    var text = buildSummaryText(data.name, data.email);
+    var ta = document.getElementById("resultsTextarea");
+    ta.value = text;
+    ta.hidden = false;
+    ta.focus();
+    ta.select();
+
+    var statusEl = document.getElementById("copyStatus");
+    document.getElementById("sendStatus").hidden = true;
+
+    var showFallback = function(){
+      statusEl.textContent = "Ecco i risultati qui sotto, già selezionati: premi Ctrl+C (o Cmd+C su Mac) per copiarli.";
+      statusEl.hidden = false;
+    };
+    var showSuccess = function(){
+      statusEl.textContent = "Risultati copiati negli appunti. Incollali dove preferisci (email, chat, documento).";
+      statusEl.hidden = false;
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(showSuccess).catch(showFallback);
+    } else {
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      if (ok) { showSuccess(); } else { showFallback(); }
+    }
+  });
+
+  function renderQuestion(){
+    var item = QUESTIONS[current];
+    var letters = ["A", "B", "C", "D"];
+
+    namebox.textContent = "B" + (current + 2);
+    fxFormula.textContent = "=DOMANDA(" + (current + 1) + "; \"" + item.cat + "\")";
+
+    document.getElementById("qCategory").textContent = item.cat;
+    document.getElementById("qText").textContent = item.q;
+
+    var pct = Math.round(((current) / QUESTIONS.length) * 100);
+    document.getElementById("progressFill").style.width = pct + "%";
+    document.getElementById("progressText").textContent = "Domanda " + (current + 1) + " di " + QUESTIONS.length;
+    document.getElementById("progressPct").textContent = pct + "%";
+
+    var wrap = document.getElementById("qOptions");
+    wrap.innerHTML = "";
+    item.opts.forEach(function(text, i){
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "opt";
+      btn.setAttribute("aria-pressed", answers[current] === i ? "true" : "false");
+      var key = document.createElement("span");
+      key.className = "opt-key";
+      key.textContent = letters[i];
+      var label = document.createElement("span");
+      label.textContent = text;
+      btn.appendChild(key);
+      btn.appendChild(label);
+      btn.addEventListener("click", function(){
+        answers[current] = i;
+        renderQuestion();
+      });
+      wrap.appendChild(btn);
+    });
+
+    document.getElementById("backBtn").style.visibility = current === 0 ? "hidden" : "visible";
+    var nextBtn = document.getElementById("nextBtn");
+    nextBtn.textContent = current === QUESTIONS.length - 1 ? "Vedi il risultato" : "Avanti";
+    nextBtn.setAttribute("aria-disabled", answers[current] === null ? "true" : "false");
+  }
+
+  function showResults(){
+    quizEl.hidden = true;
+    resultsEl.hidden = false;
+
+    var total = answers.reduce(function(sum, a){ return sum + (a + 1); }, 0);
+    var level = LEVELS.find(function(l){ return total <= l.max; }) || LEVELS[LEVELS.length - 1];
+
+    namebox.textContent = "B18";
+    fxFormula.textContent = "=LIVELLO(" + total + ")";
+
+    document.getElementById("scoreNum").textContent = total;
+    document.getElementById("levelBadge").textContent = level.name;
+    document.getElementById("levelDesc").textContent = level.desc;
+
+    var cats = {};
+    var order = [];
+    QUESTIONS.forEach(function(item, i){
+      if (!cats[item.cat]) { cats[item.cat] = 0; order.push(item.cat); }
+      cats[item.cat] += answers[i] + 1;
+    });
+
+    var breakdown = document.getElementById("catBreakdown");
+    breakdown.innerHTML = "";
+    order.forEach(function(cat){
+      var score = cats[cat];
+      var pct = Math.round(((score - 2) / 6) * 100);
+      var row = document.createElement("div");
+      row.className = "cat-row";
+      row.innerHTML =
+        '<span class="cat-name">' + cat + '</span>' +
+        '<span class="cat-score">' + score + '/8</span>' +
+        '<div class="cat-track"><div class="cat-fill" style="width:' + pct + '%"></div></div>';
+      breakdown.appendChild(row);
+    });
+
+    lastResult = { total: total, levelName: level.name, cats: cats, catOrder: order };
+
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+})();
+</script>
+</body>
+</html>
