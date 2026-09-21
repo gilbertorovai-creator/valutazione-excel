@@ -186,160 +186,160 @@
       cat: "1. Cartella di lavoro",
       q: "Devi trovare rapidamente un comando che non usi spesso, dentro la barra multifunzione di Excel. Come procedi?",
       opts: [
-        "Scorro tutte le schede finché non lo trovo per caso",
-        "So già in quale scheda cercarlo, tra Home/Inserisci/Dati...",
-        "Uso la casella di ricerca in alto per trovarlo per nome",
-        "Conosco anche le schede contestuali che compaiono solo in certe situazioni (es. dentro una tabella)"
+        { t: "Uso la casella di ricerca in alto per trovarlo per nome", p: 3 },
+        { t: "So già in quale scheda cercarlo, tra Home/Inserisci/Dati...", p: 2 },
+        { t: "Conosco anche le schede contestuali che compaiono solo in certe situazioni (es. dentro una tabella)", p: 4 },
+        { t: "Scorro tutte le schede finché non lo trovo per caso", p: 1 }
       ]
     },
     {
       cat: "1. Cartella di lavoro",
       q: "Devi salvare un file con delle macro dentro. Cosa fai?",
       opts: [
-        "Salvo normalmente con Ctrl+S, senza pensarci",
-        "So che devo scegliere un formato diverso da .xlsx, ma non ricordo quale",
-        "Scelgo il formato .xlsm apposta per le macro",
-        "Conosco anche il salvataggio automatico su OneDrive e come recuperare un file non salvato"
+        { t: "Conosco anche il salvataggio automatico su OneDrive e come recuperare un file non salvato", p: 4 },
+        { t: "Scelgo il formato .xlsm apposta per le macro", p: 3 },
+        { t: "Salvo normalmente con Ctrl+S, senza pensarci", p: 1 },
+        { t: "So che devo scegliere un formato diverso da .xlsx, ma non ricordo quale", p: 2 }
       ]
     },
     {
       cat: "2. Formule di base",
       q: "Devi calcolare una somma su una colonna di 50 numeri. Come fai?",
       opts: [
-        "Sommo i valori a mano con una calcolatrice",
-        "Scrivo =A1+A2+A3... per ogni cella",
-        "Uso =SOMMA(A1:A50)",
-        "Uso anche Alt+= per farlo inserire automaticamente da Excel"
+        { t: "Scrivo =A1+A2+A3... per ogni cella", p: 2 },
+        { t: "Uso anche Alt+= per farlo inserire automaticamente da Excel", p: 4 },
+        { t: "Uso =SOMMA(A1:A50)", p: 3 },
+        { t: "Sommo i valori a mano con una calcolatrice", p: 1 }
       ]
     },
     {
       cat: "2. Formule di base",
       q: "Vuoi sapere quante celle di una colonna soddisfano una condizione (es. valore maggiore di 100). Cosa usi?",
       opts: [
-        "Le conto a mano scorrendo la colonna",
-        "Uso CONTA per contare tutte le celle numeriche",
-        "Uso CONTA.SE con la condizione",
-        "So anche distinguere CONTA, CONTA.VALORI e CONTA.SE a seconda del caso"
+        { t: "Uso CONTA per contare tutte le celle numeriche", p: 2 },
+        { t: "Uso CONTA.SE con la condizione", p: 3 },
+        { t: "Le conto a mano scorrendo la colonna", p: 1 },
+        { t: "So anche distinguere CONTA, CONTA.VALORI e CONTA.SE a seconda del caso", p: 4 }
       ]
     },
     {
       cat: "3. Gestire i dati",
       q: "Devi ordinare un elenco di vendite mantenendo allineate tutte le colonne collegate. Cosa fai?",
       opts: [
-        "Ordino solo la colonna che mi interessa",
-        "Seleziono tutte le colonne a mano prima di ordinare",
-        "Lavoro su una Tabella di Excel, che ordina sempre l'intera riga",
-        "Uso anche l'ordinamento su più livelli (es. prima Regione, poi Fatturato)"
+        { t: "Seleziono tutte le colonne a mano prima di ordinare", p: 2 },
+        { t: "Lavoro su una Tabella di Excel, che ordina sempre l'intera riga", p: 3 },
+        { t: "Uso anche l'ordinamento su più livelli (es. prima Regione, poi Fatturato)", p: 4 },
+        { t: "Ordino solo la colonna che mi interessa", p: 1 }
       ]
     },
     {
       cat: "3. Gestire i dati",
       q: "Vuoi un totale per ciascuna regione, su dati già ordinati per regione, senza costruire una Tabella Pivot. Cosa usi?",
       opts: [
-        "Non saprei come fare senza una pivot",
-        "Copio i dati di ogni regione in fogli separati e sommo a mano",
-        "Uso Dati > Subtotale",
-        "So anche gestire la struttura a schema (+/-) che i Subtotali creano in automatico"
+        { t: "Copio i dati di ogni regione in fogli separati e sommo a mano", p: 2 },
+        { t: "So anche gestire la struttura a schema (+/-) che i Subtotali creano in automatico", p: 4 },
+        { t: "Uso Dati > Subtotale", p: 3 },
+        { t: "Non saprei come fare senza una pivot", p: 1 }
       ]
     },
     {
       cat: "4. Analizzare le vendite",
       q: "In una tabella con la colonna Prezzo, vuoi che ogni riga calcoli automaticamente il Totale con Quantità e Prezzo di quella riga. Come scrivi la formula?",
       opts: [
-        "Scrivo un riferimento diverso a mano su ogni riga",
-        "Uso =B2*C2 e la copio in basso",
-        "Uso i riferimenti strutturati, tipo [@Quantità]*[@Prezzo]",
-        "So anche perché i riferimenti strutturati sono più sicuri quando si spostano le colonne"
+        { t: "Uso i riferimenti strutturati, tipo [@Quantità]*[@Prezzo]", p: 3 },
+        { t: "Uso =B2*C2 e la copio in basso", p: 2 },
+        { t: "Scrivo un riferimento diverso a mano su ogni riga", p: 1 },
+        { t: "So anche perché i riferimenti strutturati sono più sicuri quando si spostano le colonne", p: 4 }
       ]
     },
     {
       cat: "4. Analizzare le vendite",
       q: "Vuoi impedire che qualcuno scriva una regione inesistente in una colonna (es. per errore di battitura). Cosa usi?",
       opts: [
-        "Non lo controllo, correggo gli errori quando li trovo",
-        "Scrivo un promemoria delle regioni valide da qualche parte nel foglio",
-        "Uso Dati > Convalida dati con un elenco a discesa",
-        "Uso anche messaggi di errore personalizzati nella convalida"
+        { t: "Scrivo un promemoria delle regioni valide da qualche parte nel foglio", p: 2 },
+        { t: "Uso anche messaggi di errore personalizzati nella convalida", p: 4 },
+        { t: "Non lo controllo, correggo gli errori quando li trovo", p: 1 },
+        { t: "Uso Dati > Convalida dati con un elenco a discesa", p: 3 }
       ]
     },
     {
       cat: "5. Visualizzare i dati",
       q: "Devi mostrare l'andamento del fatturato negli ultimi 6 mesi. Che grafico usi?",
       opts: [
-        "Non uso grafici, preferisco leggere i numeri in tabella",
-        "Un grafico a colonne",
-        "Un grafico a linee",
-        "Un grafico a linee con anche una linea di tendenza aggiunta"
+        { t: "Non uso grafici, preferisco leggere i numeri in tabella", p: 1 },
+        { t: "Un grafico a linee", p: 3 },
+        { t: "Un grafico a colonne", p: 2 },
+        { t: "Un grafico a linee con anche una linea di tendenza aggiunta", p: 4 }
       ]
     },
     {
       cat: "5. Visualizzare i dati",
       q: "Devi mostrare come il fatturato si divide tra 4 regioni. Che grafico scegli?",
       opts: [
-        "Non saprei quale grafico sia adatto",
-        "Un grafico a colonne",
-        "Un grafico a torta",
-        "Un grafico a torta con le percentuali visibili su ogni fetta"
+        { t: "Un grafico a torta", p: 3 },
+        { t: "Un grafico a torta con le percentuali visibili su ogni fetta", p: 4 },
+        { t: "Non saprei quale grafico sia adatto", p: 1 },
+        { t: "Un grafico a colonne", p: 2 }
       ]
     },
     {
       cat: "6. Dashboard interattive",
       q: "Devi riassumere migliaia di righe incrociando categoria e regione. Cosa usi?",
       opts: [
-        "Formule SOMMA.SE ripetute per ogni combinazione",
-        "Una Tabella Pivot base",
-        "Una Tabella Pivot con le date raggruppate per mese/trimestre",
-        "Una Tabella Pivot con anche un campo calcolato personalizzato"
+        { t: "Una Tabella Pivot con le date raggruppate per mese/trimestre", p: 3 },
+        { t: "Una Tabella Pivot base", p: 2 },
+        { t: "Una Tabella Pivot con anche un campo calcolato personalizzato", p: 4 },
+        { t: "Formule SOMMA.SE ripetute per ogni combinazione", p: 1 }
       ]
     },
     {
       cat: "6. Dashboard interattive",
       q: "Vuoi che il foglio mostri o nasconda una sezione in base a una scelta dell'utente (es. una casella spuntata). Cosa usi?",
       opts: [
-        "Non so come si fa",
-        "Nascondo/mostro le righe manualmente quando serve",
-        "Un controllo modulo (casella di controllo) collegato a una cella",
-        "Un controllo collegato a una cella, usato dentro una formula SE o FILTRA"
+        { t: "Un controllo collegato a una cella, usato dentro una formula SE o FILTRA", p: 4 },
+        { t: "Un controllo modulo (casella di controllo) collegato a una cella", p: 3 },
+        { t: "Nascondo/mostro le righe manualmente quando serve", p: 2 },
+        { t: "Non so come si fa", p: 1 }
       ]
     },
     {
       cat: "7. Automatizzare operazioni",
       q: "Devi ripetere la stessa formattazione su più fogli ogni settimana. Cosa fai?",
       opts: [
-        "La rifaccio a mano ogni volta",
-        "Uso Incolla speciale per velocizzare",
-        "Registro una Macro e la richiamo quando serve",
-        "So anche aprire il codice della macro e correggerlo se qualcosa non va"
+        { t: "So anche aprire il codice della macro e correggerlo se qualcosa non va", p: 4 },
+        { t: "Uso Incolla speciale per velocizzare", p: 2 },
+        { t: "La rifaccio a mano ogni volta", p: 1 },
+        { t: "Registro una Macro e la richiamo quando serve", p: 3 }
       ]
     },
     {
       cat: "7. Automatizzare operazioni",
       q: "Una macro che hai registrato ha un piccolo errore (es. un colore sbagliato). Cosa fai?",
       opts: [
-        "La cancello e la registro di nuovo da zero",
-        "Non saprei come intervenire",
-        "Apro l'editor Visual Basic e provo a leggere il codice",
-        "Modifico direttamente la riga di codice interessata"
+        { t: "Apro l'editor Visual Basic e provo a leggere il codice", p: 3 },
+        { t: "Modifico direttamente la riga di codice interessata", p: 4 },
+        { t: "Non saprei come intervenire", p: 2 },
+        { t: "La cancello e la registro di nuovo da zero", p: 1 }
       ]
     },
     {
       cat: "8. Dati clienti",
       q: "Devi recuperare i dati di un cliente da una tabella, a partire dal suo ID. Cosa usi?",
       opts: [
-        "Cerco a occhio scorrendo la tabella",
-        "CERCA.VERT",
-        "INDICE + CONFRONTA",
-        "CERCA.X"
+        { t: "Cerco a occhio scorrendo la tabella", p: 1 },
+        { t: "CERCA.VERT", p: 2 },
+        { t: "CERCA.X", p: 4 },
+        { t: "INDICE + CONFRONTA", p: 3 }
       ]
     },
     {
       cat: "8. Dati clienti",
       q: "Devi impostare da zero un foglio con l'elenco clienti (ID, nome, regione, totale speso) pronto per essere interrogato con formule. Come procedi?",
       opts: [
-        "Scrivo i dati senza pensare troppo alla struttura",
-        "Uso intestazioni chiare, ma resta un intervallo semplice",
-        "Converto l'elenco in una Tabella di Excel",
-        "Uso una Tabella di Excel e verifico che gli ID siano scritti in modo coerente (tutti numeri o tutti testo)"
+        { t: "Uso una Tabella di Excel e verifico che gli ID siano scritti in modo coerente (tutti numeri o tutti testo)", p: 4 },
+        { t: "Scrivo i dati senza pensare troppo alla struttura", p: 1 },
+        { t: "Converto l'elenco in una Tabella di Excel", p: 3 },
+        { t: "Uso intestazioni chiare, ma resta un intervallo semplice", p: 2 }
       ]
     }
   ];
@@ -448,7 +448,8 @@
     var letters = ["A", "B", "C", "D"];
     QUESTIONS.forEach(function(item, i){
       var num = (i + 1 < 10 ? "0" : "") + (i + 1);
-      lines.push(num + ". [" + item.cat + "] risposta " + letters[answers[i]] + " (" + (answers[i] + 1) + "/4)");
+      var chosen = item.opts[answers[i]];
+      lines.push(num + ". [" + item.cat + "] risposta " + letters[answers[i]] + " (" + chosen.p + "/4)");
     });
     return lines.join("\n");
   }
@@ -549,7 +550,7 @@
 
     var wrap = document.getElementById("qOptions");
     wrap.innerHTML = "";
-    item.opts.forEach(function(text, i){
+    item.opts.forEach(function(opt, i){
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "opt";
@@ -558,7 +559,7 @@
       key.className = "opt-key";
       key.textContent = letters[i];
       var label = document.createElement("span");
-      label.textContent = text;
+      label.textContent = opt.t;
       btn.appendChild(key);
       btn.appendChild(label);
       btn.addEventListener("click", function(){
@@ -578,7 +579,7 @@
     quizEl.hidden = true;
     resultsEl.hidden = false;
 
-    var total = answers.reduce(function(sum, a){ return sum + (a + 1); }, 0);
+    var total = answers.reduce(function(sum, a, i){ return sum + QUESTIONS[i].opts[a].p; }, 0);
     var level = LEVELS.find(function(l){ return total <= l.max; }) || LEVELS[LEVELS.length - 1];
 
     namebox.textContent = "B18";
@@ -592,7 +593,7 @@
     var order = [];
     QUESTIONS.forEach(function(item, i){
       if (!cats[item.cat]) { cats[item.cat] = 0; order.push(item.cat); }
-      cats[item.cat] += answers[i] + 1;
+      cats[item.cat] += item.opts[answers[i]].p;
     });
 
     var breakdown = document.getElementById("catBreakdown");
