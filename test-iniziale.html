@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test di valutazione iniziale - Corso Excel Paladin</title>
+<style>
+:root{
+  --accent:#1E6F5C;
+  --amber:#C97B3D;
+  --bg:#F5F3EC;
+  --ink:#2B2B26;
+  --line:#D8D2C2;
+  --card:#FFFFFF;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Segoe UI",Tahoma,sans-serif;
+  line-height:1.5;
+}
+header{
+  background:var(--accent);
+  color:#fff;
+  padding:28px 20px;
+  text-align:center;
+}
+header h1{
+  font-family:Georgia,"Iowan Old Style",serif;
+  margin:0 0 6px 0;
+  font-size:1.8em;
+}
+header p{margin:0;opacity:.9;font-size:.95em;}
+main{
+  max-width:760px;
+  margin:0 auto;
+  padding:24px 16px 60px;
+}
+.intro{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-left:4px solid var(--amber);
+  padding:18px 20px;
+  border-radius:6px;
+  margin-bottom:24px;
+}
+.intro label{display:block;margin-top:10px;font-weight:600;font-size:.9em;}
+.intro input{
+  width:100%;
+  padding:8px 10px;
+  border:1px solid var(--line);
+  border-radius:4px;
+  font-size:1em;
+  margin-top:4px;
+}
+.qcard{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:18px 20px;
+  margin-bottom:16px;
+}
+.qmeta{
+  font-family:"Cascadia Code","Consolas",monospace;
+  font-size:.75em;
+  color:var(--amber);
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  margin-bottom:4px;
+}
+.qtext{
+  font-family:Georgia,serif;
+  font-size:1.08em;
+  margin:0 0 12px 0;
+}
+.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:9px 10px;
+  border:1px solid var(--line);
+  border-radius:5px;
+  margin-bottom:8px;
+  cursor:pointer;
+  transition:background .15s;
+}
+.opt:hover{background:#FAF8F2;}
+.opt input{margin-top:3px;}
+.opt.selected{border-color:var(--accent);background:#EAF3F0;}
+#submitBtn{
+  display:block;
+  width:100%;
+  padding:14px;
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  font-size:1.05em;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:10px;
+}
+#submitBtn:hover{background:#175A4A;}
+#result{
+  display:none;
+  background:var(--card);
+  border:2px solid var(--accent);
+  border-radius:8px;
+  padding:22px;
+  text-align:center;
+  margin-top:20px;
+}
+#result h2{font-family:Georgia,serif;color:var(--accent);margin-top:0;}
+.scorebig{font-size:2.4em;font-weight:700;color:var(--amber);margin:6px 0;}
+.detail{
+  text-align:left;
+  font-size:.9em;
+  margin-top:16px;
+  border-top:1px solid var(--line);
+  padding-top:12px;
+}
+.detail div{padding:4px 0;}
+.ok{color:var(--accent);font-weight:600;}
+.ko{color:#B03A2E;font-weight:600;}
+.progress{
+  font-family:"Cascadia Code",monospace;
+  font-size:.8em;
+  color:#777;
+  text-align:center;
+  margin-bottom:14px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Test di valutazione iniziale &mdash; Corso Excel Paladin</h1>
+  <p>Verifica del tuo livello di partenza su Excel</p>
+</header>
+
+<main>
+  <div class="intro">
+    <p><strong>Istruzioni:</strong> questo test serve a capire da quale livello parti prima del corso, quindi non preoccuparti se non conosci qualche argomento: rispondi in base a ciò che sai davvero e non tirare a indovinare. Le risposte sono in ordine casuale. Al termine premi &quot;Invia i risultati&quot;: le risposte verranno inviate direttamente al docente.</p>
+    <label for="nome">Nome e cognome</label>
+    <input type="text" id="nome" placeholder="Il tuo nome">
+    <label for="email">Email (facoltativa)</label>
+    <input type="email" id="email" placeholder="nome@esempio.it">
+  </div>
+
+  <div class="progress" id="progress"></div>
+  <form id="quizForm"></form>
+  <button id="submitBtn" type="button">Invia i risultati</button>
+
+  <div id="result">
+    <h2>Grazie!</h2>
+    <div id="resultMsg"></div>
+  </div>
+</main>
+
+<script>
+// Ogni domanda: modulo/lezione di riferimento, testo, elenco opzioni con flag "c" (corretta)
+const QUESTIONS = [
+{mod:"1.1", t:"Nella barra della formula, cosa viene mostrato quando la cella attiva contiene una formula?", opts:[
+  {t:"La formula digitata, mentre nella cella si vede il risultato", c:true},
+  {t:"Il risultato della formula, identico a quello nella cella", c:false},
+  {t:"Il nome assegnato alla cella, se presente", c:false},
+  {t:"Solo il riferimento della cella (es. A1)", c:false}
+]},
+{mod:"1.2", t:"Perché conviene impostare il Formato celle (Data, Testo, Numero) PRIMA di inserire i dati in un elenco?", opts:[
+  {t:"Perché con la formattazione automatica Excel potrebbe interpretare male testo/numeri/date", c:true},
+  {t:"Perché altrimenti Excel non permette di salvare il file", c:false},
+  {t:"Perché è obbligatorio per usare le tabelle Pivot", c:false},
+  {t:"Non ha nessuna reale importanza, è solo un'abitudine", c:false}
+]},
+{mod:"1.2", t:"Come viene memorizzata internamente una data in Excel?", opts:[
+  {t:"Come numero intero di giorni trascorsi dal 1° gennaio 1900", c:true},
+  {t:"Come testo formattato secondo le impostazioni regionali", c:false},
+  {t:"Come combinazione di tre numeri separati (giorno, mese, anno)", c:false},
+  {t:"Come valore percentuale rispetto all'anno corrente", c:false}
+]},
+{mod:"2.1", t:"A cosa serve lo strumento 'Trova celle precedenti' nel gruppo Verifica formule?", opts:[
+  {t:"Mostra con delle frecce quali celle contribuiscono al risultato della formula selezionata", c:true},
+  {t:"Elimina automaticamente le celle vuote precedenti alla selezione", c:false},
+  {t:"Sposta il cursore alla cella precedente nella cronologia di modifica", c:false},
+  {t:"Confronta la formula attuale con la versione precedente salvata", c:false}
+]},
+{mod:"2.1", t:"Perché conviene mettere le formule di analisi (totale, media, ecc.) su un foglio separato dai dati grezzi?", opts:[
+  {t:"Per mantenere la base dati pulita, senza altre tabelle o celle accanto", c:true},
+  {t:"Perché Excel non permette formule sullo stesso foglio dei dati", c:false},
+  {t:"Perché altrimenti le formule non si aggiornano automaticamente", c:false},
+  {t:"È solo una preferenza estetica, non ha conseguenze pratiche", c:false}
+]},
+{mod:"3.1", t:"A cosa serve principalmente il Modulo (Maschera dati) in Excel?", opts:[
+  {t:"A inserire e scorrere righe di un elenco come fosse un vero database, senza modificare la struttura a mano", c:true},
+  {t:"A creare automaticamente grafici a partire dai dati inseriti", c:false},
+  {t:"A proteggere il foglio con una password", c:false},
+  {t:"A convalidare automaticamente ogni cella con un menu a tendina", c:false}
+]},
+{mod:"3.2", t:"Se il comando di ordinamento propone 'Ordina dalla A alla Z' su una colonna che dovrebbe contenere numeri, cosa indica questo segnale?", opts:[
+  {t:"Che quelle celle non sono formattate correttamente come numero (sono testo o formato personalizzato)", c:true},
+  {t:"Che la colonna contiene valori duplicati da rimuovere", c:false},
+  {t:"Che serve attivare prima il filtro automatico", c:false},
+  {t:"Che il foglio è protetto e non può essere riordinato", c:false}
+]},
+{mod:"3.2", t:"Perché la funzione SUBTOTALE continua a mostrare il risultato corretto anche quando alcune righe sono nascoste, a differenza di SOMMA?", opts:[
+  {t:"Perché SUBTOTALE è progettata per ignorare le righe nascoste nel calcolo", c:true},
+  {t:"Perché SUBTOTALE ricalcola automaticamente ogni notte", c:false},
+  {t:"In realtà non c'è nessuna differenza tra le due funzioni", c:false},
+  {t:"Perché SUBTOTALE funziona solo dentro le tabelle Pivot", c:false}
+]},
+{mod:"4.1", t:"Quando si trascina una formula di percentuale verso il basso, perché è necessario bloccare con il simbolo $ il riferimento alla somma totale?", opts:[
+  {t:"Altrimenti nella riga successiva il denominatore cambierebbe, invece di restare sull'intero intervallo fisso", c:true},
+  {t:"Perché senza $ Excel restituisce sempre un errore di formula", c:false},
+  {t:"Perché $ è obbligatorio per applicare lo stile Percentuale", c:false},
+  {t:"Non è necessario, il blocco serve solo nelle tabelle di Excel", c:false}
+]},
+{mod:"4.5", t:"In una tabella di Excel chiamata 'Vendite', come si scrive con un riferimento strutturato la colonna 'Fatturato'?", opts:[
+  {t:"Vendite[Fatturato]", c:true},
+  {t:"Vendite.Fatturato", c:false},
+  {t:"$Fatturato$", c:false},
+  {t:"@Fatturato(Vendite)", c:false}
+]},
+{mod:"4.6", t:"Per trasformare una cella in un menu a tendina che propone un elenco di valori, quale strumento si usa?", opts:[
+  {t:"Convalida dati, scegliendo 'Consenti: Elenco'", c:true},
+  {t:"Formato celle, scheda Elenco", c:false},
+  {t:"Il comando 'Riepiloga con Tabella Pivot'", c:false},
+  {t:"La funzione UNICI applicata direttamente alla cella", c:false}
+]},
+{mod:"5.1", t:"Perché Excel, quando si sceglie un grafico che raggruppa e somma i dati per un campo, crea un grafico Pivot?", opts:[
+  {t:"Perché per creare un grafico con dati raggruppati e consolidati serve necessariamente una struttura di questo tipo", c:true},
+  {t:"È un errore comune del programma, si può sempre evitare", c:false},
+  {t:"Perché i dati di origine erano già una tabella Pivot", c:false},
+  {t:"Solo se i dati contengono valori percentuali", c:false}
+]},
+{mod:"5.2", t:"Cosa permette di fare l'opzione di 'espansione in avanti' della linea di tendenza?", opts:[
+  {t:"Proiettare la tendenza per un certo numero di periodi futuri, ottenendo una previsione", c:true},
+  {t:"Estendere automaticamente i dati di origine con valori casuali", c:false},
+  {t:"Convertire la linea di tendenza in un grafico a torta", c:false},
+  {t:"Eliminare i valori anomali dal grafico", c:false}
+]},
+{mod:"5.3", t:"Quando il grafico a torta è poco adatto per rappresentare i dati?", opts:[
+  {t:"Quando le categorie sono molte: la torta è più efficace con pochi valori distinti", c:true},
+  {t:"Quando i dati contengono valori percentuali", c:false},
+  {t:"Quando i dati sono già ordinati alfabeticamente", c:false},
+  {t:"Non ci sono limiti, va bene con qualsiasi numero di categorie", c:false}
+]},
+{mod:"6.1", t:"Da cosa deriva il nome 'tabella Pivot'?", opts:[
+  {t:"Dal 'pivot', il giocatore che resta fermo al centro mentre gli altri campi ruotano intorno a lui nelle aree Righe/Colonne", c:true},
+  {t:"Dal nome del primo sviluppatore che ha creato questo strumento in Excel", c:false},
+  {t:"Dal fatto che si può ruotare graficamente di 90 gradi", c:false},
+  {t:"È un acronimo inglese senza significato particolare", c:false}
+]},
+{mod:"6.1", t:"Quale area di una tabella Pivot va tenuta 'ferma', facendo invece ruotare gli altri campi tra Righe e Colonne?", opts:[
+  {t:"L'area Valori", c:true},
+  {t:"L'area Filtri", c:false},
+  {t:"L'intestazione della tabella originale", c:false},
+  {t:"Nessuna, tutte le aree sono equivalenti", c:false}
+]},
+{mod:"6.2", t:"Cosa succede automaticamente se si trascina un campo Data nell'area Righe di una tabella Pivot, anche se i dati hanno una data specifica per ogni riga?", opts:[
+  {t:"Excel raggruppa automaticamente per anno e trimestre (o altro periodo)", c:true},
+  {t:"Excel restituisce un errore, perché servirebbe prima ordinare i dati", c:false},
+  {t:"Nulla, resta sempre una riga per ogni data esatta", c:false},
+  {t:"Excel elimina automaticamente le date duplicate", c:false}
+]},
+{mod:"6.3", t:"Per modificare un grafico Pivot già creato, su cosa bisogna agire?", opts:[
+  {t:"Sull'elenco campi, che riflette la tabella Pivot sottostante", c:true},
+  {t:"Direttamente sul grafico, trascinando le barre con il mouse", c:false},
+  {t:"Solo riscrivendo la formula della tabella Pivot", c:false},
+  {t:"Sul foglio dati originale, cambiando l'ordine delle colonne", c:false}
+]},
+{mod:"6.4", t:"Qual è la differenza tra un campo nell'area Filtri di una tabella Pivot e il controllo grafico 'Filtro dati'?", opts:[
+  {t:"Il controllo 'Filtro dati' offre un'interfaccia visiva cliccabile e, tramite 'Connessioni rapporto', può filtrare più tabelle Pivot insieme", c:true},
+  {t:"Sono esattamente la stessa cosa con un nome diverso", c:false},
+  {t:"Il campo Filtro funziona solo su valori numerici", c:false},
+  {t:"Il controllo 'Filtro dati' non può mai essere collegato a più tabelle", c:false}
+]},
+{mod:"7.1", t:"Cosa si deve fare per poter riattivare il salvataggio automatico mentre si sta registrando una macro?", opts:[
+  {t:"Cambiare il tipo di file in uno con attivazione macro (es. 'Cartella di lavoro con attivazione macro di Excel')", c:true},
+  {t:"Interrompere e riavviare Excel", c:false},
+  {t:"Non è possibile farlo finché la macro non è completata", c:false},
+  {t:"Attivare l'opzione 'Usa riferimenti relativi'", c:false}
+]},
+{mod:"7.2-7.3", t:"Da dove si crea un pulsante personalizzato nella barra multifunzione collegato a una macro già registrata?", opts:[
+  {t:"File &gt; Opzioni &gt; Personalizza barra multifunzione, scegliendo la categoria 'Macro'", c:true},
+  {t:"Dalla scheda Inserisci, gruppo Illustrazioni", c:false},
+  {t:"Solo modificando manualmente il codice VBA", c:false},
+  {t:"Dalla Convalida dati, scegliendo 'Consenti: Macro'", c:false}
+]},
+{mod:"8.1", t:"Dopo aver estratto un elenco con una formula (es. UNICI), perché può convenire copiarlo e incollarlo come 'solo valori'?", opts:[
+  {t:"Per svincolare i risultati dalla formula e dal collegamento in tempo reale alla tabella di origine", c:true},
+  {t:"Perché altrimenti Excel non permette di aggiungere altre colonne", c:false},
+  {t:"Per applicare automaticamente il formato Testo", c:false},
+  {t:"Non è necessario, è solo un passaggio facoltativo senza motivo pratico", c:false}
+]},
+{mod:"8.1", t:"Perché il CAP, pur essendo composto da cifre, va formattato come Testo e non come Numero?", opts:[
+  {t:"Perché non rappresenta un valore su cui fare calcoli matematici", c:true},
+  {t:"Perché altrimenti occuperebbe troppo spazio nella cella", c:false},
+  {t:"Perché il formato Numero non accetta più di 5 cifre", c:false},
+  {t:"Perché deve sempre iniziare con uno zero", c:false}
+]},
+{mod:"8.2-8.5", t:"Qual è il limite principale della funzione CERCA.VERT rispetto alla combinazione INDICE+CONFRONTA?", opts:[
+  {t:"CERCA.VERT cerca sempre e solo nella prima colonna della tabella/intervallo indicato", c:true},
+  {t:"CERCA.VERT non funziona con le tabelle di Excel con nome", c:false},
+  {t:"CERCA.VERT non supporta la corrispondenza esatta", c:false},
+  {t:"CERCA.VERT funziona solo con valori numerici, mai con testo", c:false}
+]},
+{mod:"8.2-8.5", t:"Cosa restituisce la funzione CONFRONTA, a differenza di INDICE?", opts:[
+  {t:"La posizione (indice) di un elemento cercato in un intervallo, non il valore stesso", c:true},
+  {t:"Il valore esatto trovato nella cella cercata", c:false},
+  {t:"Il numero totale di celle non vuote nell'intervallo", c:false},
+  {t:"La somma di tutti i valori corrispondenti al criterio", c:false}
+]}
+];
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+const order = QUESTIONS.map((q,i)=>i);
+const form = document.getElementById('quizForm');
+document.getElementById('progress').textContent = QUESTIONS.length + ' domande';
+
+order.forEach((qi, idx)=>{
+  const q = QUESTIONS[qi];
+  const optOrder = shuffle(q.opts.map((o,i)=>i));
+  const card = document.createElement('div');
+  card.className = 'qcard';
+  card.innerHTML = `<div class="qmeta">Domanda ${idx+1}</div><p class="qtext">${q.t}</p>`;
+  optOrder.forEach(oi=>{
+    const opt = q.opts[oi];
+    const label = document.createElement('label');
+    label.className = 'opt';
+    label.innerHTML = `<input type="radio" name="q${qi}" value="${oi}"> <span>${opt.t}</span>`;
+    label.addEventListener('click', ()=>{
+      card.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+      label.classList.add('selected');
+    });
+    card.appendChild(label);
+  });
+  form.appendChild(card);
+});
+
+const DEST = 'gilbertorovai@gmail.com';
+
+document.getElementById('submitBtn').addEventListener('click', async ()=>{
+  const nome = document.getElementById('nome').value.trim();
+  if(!nome){
+    alert('Inserisci il tuo nome e cognome prima di inviare.');
+    document.getElementById('nome').focus();
+    return;
+  }
+  let correct = 0;
+  let righe = [];
+  let allAnswered = true;
+  order.forEach((qi, idx)=>{
+    const q = QUESTIONS[qi];
+    const sel = form.querySelector(`input[name="q${qi}"]:checked`);
+    if(!sel){ allAnswered = false; return; }
+    const chosen = q.opts[parseInt(sel.value)];
+    const isOk = chosen.c === true;
+    if(isOk) correct++;
+    const plain = s => s.replace(/&gt;/g,'>').replace(/&lt;/g,'<').replace(/&amp;/g,'&');
+    righe.push((idx+1)+'. [Lez. '+q.mod+'] '+(isOk?'CORRETTA':'ERRATA')+' - '+plain(q.t)+' => '+plain(chosen.t));
+  });
+  if(!allAnswered){
+    alert('Rispondi a tutte le domande prima di inviare.');
+    return;
+  }
+  const total = QUESTIONS.length;
+  const pct = Math.round((correct/total)*100);
+  const payload = {
+    _subject: 'Test iniziale Excel - ' + nome + ' - ' + correct + '/' + total,
+    _template: 'table',
+    nome: nome,
+    email: document.getElementById('email').value.trim() || '(non indicata)',
+    punteggio: correct + ' / ' + total + ' (' + pct + '%)',
+    dettaglio: righe.join('\n')
+  };
+  const btn = document.getElementById('submitBtn');
+  const box = document.getElementById('result');
+  const msg = document.getElementById('resultMsg');
+  btn.disabled = true;
+  btn.textContent = 'Invio in corso...';
+  try{
+    const r = await fetch('https://formsubmit.co/ajax/' + DEST, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    msg.textContent = 'Le tue risposte sono state inviate correttamente. Puoi chiudere questa pagina.';
+    btn.style.display = 'none';
+  }catch(e){
+    const body = 'Nome: ' + nome + '\nPunteggio: ' + payload.punteggio + '\n\n' + payload.dettaglio;
+    msg.innerHTML = 'Non sono riuscito a inviare automaticamente. <a href="mailto:' + DEST + '?subject=' + encodeURIComponent(payload._subject) + '&body=' + encodeURIComponent(body) + '">Clicca qui per inviare il risultato con il tuo programma di posta</a>.';
+    btn.disabled = false;
+    btn.textContent = 'Invia i risultati';
+  }
+  box.style.display = 'block';
+  box.scrollIntoView({behavior:'smooth'});
+});
+</script>
+
+</body>
+</html>
