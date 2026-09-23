@@ -347,6 +347,7 @@ order.forEach((qi, idx)=>{
 });
 
 const DEST = 'gilbertorovai@gmail.com';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbylm4eYqJ76NnduDuRho6jIdV-gZPOg6ECWv-UTyDJVKUylQ2231sWYAQrHq0onIVmzqg/exec';
 
 document.getElementById('submitBtn').addEventListener('click', async ()=>{
   const nome = document.getElementById('nome').value.trim();
@@ -357,6 +358,7 @@ document.getElementById('submitBtn').addEventListener('click', async ()=>{
   }
   let correct = 0;
   let righe = [];
+  let esiti = [];
   let allAnswered = true;
   order.forEach((qi, idx)=>{
     const q = QUESTIONS[qi];
@@ -365,6 +367,7 @@ document.getElementById('submitBtn').addEventListener('click', async ()=>{
     const chosen = q.opts[parseInt(sel.value)];
     const isOk = chosen.c === true;
     if(isOk) correct++;
+    esiti.push(isOk ? 1 : 0);
     const plain = s => s.replace(/&gt;/g,'>').replace(/&lt;/g,'<').replace(/&amp;/g,'&');
     righe.push((idx+1)+'. [Lez. '+q.mod+'] '+(isOk?'CORRETTA':'ERRATA')+' - '+plain(q.t)+' => '+plain(chosen.t));
   });
@@ -387,6 +390,22 @@ document.getElementById('submitBtn').addEventListener('click', async ()=>{
   const msg = document.getElementById('resultMsg');
   btn.disabled = true;
   btn.textContent = 'Invio in corso...';
+  if(SHEET_URL){
+    fetch(SHEET_URL, {
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({
+        nome: nome,
+        email: payload.email,
+        corrette: correct,
+        totale: total,
+        percentuale: pct,
+        esiti: esiti,
+        dettaglio: payload.dettaglio
+      })
+    }).catch(()=>{});
+  }
   try{
     const r = await fetch('https://formsubmit.co/ajax/' + DEST, {
       method:'POST',
