@@ -163,150 +163,175 @@ main{
 // Ogni domanda: modulo/lezione di riferimento, testo, elenco opzioni con flag "c" (corretta)
 const QUESTIONS = [
 {mod:"1.1", t:"Nella barra della formula, cosa viene mostrato quando la cella attiva contiene una formula?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"La formula digitata, mentre nella cella si vede il risultato", c:true},
   {t:"Il risultato della formula, identico a quello nella cella", c:false},
   {t:"Il nome assegnato alla cella, se presente", c:false},
   {t:"Solo il riferimento della cella (es. A1)", c:false}
 ]},
 {mod:"1.2", t:"Perché conviene impostare il Formato celle (Data, Testo, Numero) PRIMA di inserire i dati in un elenco?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Perché con la formattazione automatica Excel potrebbe interpretare male testo/numeri/date", c:true},
   {t:"Perché altrimenti Excel non permette di salvare il file", c:false},
   {t:"Perché è obbligatorio per usare le tabelle Pivot", c:false},
   {t:"Non ha nessuna reale importanza, è solo un'abitudine", c:false}
 ]},
 {mod:"1.2", t:"Come viene memorizzata internamente una data in Excel?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Come numero intero di giorni trascorsi dal 1° gennaio 1900", c:true},
   {t:"Come testo formattato secondo le impostazioni regionali", c:false},
   {t:"Come combinazione di tre numeri separati (giorno, mese, anno)", c:false},
   {t:"Come valore percentuale rispetto all'anno corrente", c:false}
 ]},
 {mod:"2.1", t:"A cosa serve lo strumento 'Trova celle precedenti' nel gruppo Verifica formule?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Mostra con delle frecce quali celle contribuiscono al risultato della formula selezionata", c:true},
   {t:"Elimina automaticamente le celle vuote precedenti alla selezione", c:false},
   {t:"Sposta il cursore alla cella precedente nella cronologia di modifica", c:false},
   {t:"Confronta la formula attuale con la versione precedente salvata", c:false}
 ]},
 {mod:"2.1", t:"Perché conviene mettere le formule di analisi (totale, media, ecc.) su un foglio separato dai dati grezzi?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Per mantenere la base dati pulita, senza altre tabelle o celle accanto", c:true},
   {t:"Perché Excel non permette formule sullo stesso foglio dei dati", c:false},
   {t:"Perché altrimenti le formule non si aggiornano automaticamente", c:false},
   {t:"È solo una preferenza estetica, non ha conseguenze pratiche", c:false}
 ]},
 {mod:"3.1", t:"A cosa serve principalmente il Modulo (Maschera dati) in Excel?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"A inserire e scorrere righe di un elenco come fosse un vero database, senza modificare la struttura a mano", c:true},
   {t:"A creare automaticamente grafici a partire dai dati inseriti", c:false},
   {t:"A proteggere il foglio con una password", c:false},
   {t:"A convalidare automaticamente ogni cella con un menu a tendina", c:false}
 ]},
 {mod:"3.2", t:"Se il comando di ordinamento propone 'Ordina dalla A alla Z' su una colonna che dovrebbe contenere numeri, cosa indica questo segnale?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Che quelle celle non sono formattate correttamente come numero (sono testo o formato personalizzato)", c:true},
   {t:"Che la colonna contiene valori duplicati da rimuovere", c:false},
   {t:"Che serve attivare prima il filtro automatico", c:false},
   {t:"Che il foglio è protetto e non può essere riordinato", c:false}
 ]},
 {mod:"3.2", t:"Perché la funzione SUBTOTALE continua a mostrare il risultato corretto anche quando alcune righe sono nascoste, a differenza di SOMMA?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Perché SUBTOTALE è progettata per ignorare le righe nascoste nel calcolo", c:true},
   {t:"Perché SUBTOTALE ricalcola automaticamente ogni notte", c:false},
   {t:"In realtà non c'è nessuna differenza tra le due funzioni", c:false},
   {t:"Perché SUBTOTALE funziona solo dentro le tabelle Pivot", c:false}
 ]},
 {mod:"4.1", t:"Quando si trascina una formula di percentuale verso il basso, perché è necessario bloccare con il simbolo $ il riferimento alla somma totale?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Altrimenti nella riga successiva il denominatore cambierebbe, invece di restare sull'intero intervallo fisso", c:true},
   {t:"Perché senza $ Excel restituisce sempre un errore di formula", c:false},
   {t:"Perché $ è obbligatorio per applicare lo stile Percentuale", c:false},
   {t:"Non è necessario, il blocco serve solo nelle tabelle di Excel", c:false}
 ]},
 {mod:"4.5", t:"In una tabella di Excel chiamata 'Vendite', come si scrive con un riferimento strutturato la colonna 'Fatturato'?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Vendite[Fatturato]", c:true},
   {t:"Vendite.Fatturato", c:false},
   {t:"$Fatturato$", c:false},
   {t:"@Fatturato(Vendite)", c:false}
 ]},
 {mod:"4.6", t:"Per trasformare una cella in un menu a tendina che propone un elenco di valori, quale strumento si usa?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Convalida dati, scegliendo 'Consenti: Elenco'", c:true},
   {t:"Formato celle, scheda Elenco", c:false},
   {t:"Il comando 'Riepiloga con Tabella Pivot'", c:false},
   {t:"La funzione UNICI applicata direttamente alla cella", c:false}
 ]},
 {mod:"5.1", t:"Perché Excel, quando si sceglie un grafico che raggruppa e somma i dati per un campo, crea un grafico Pivot?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Perché per creare un grafico con dati raggruppati e consolidati serve necessariamente una struttura di questo tipo", c:true},
   {t:"È un errore comune del programma, si può sempre evitare", c:false},
   {t:"Perché i dati di origine erano già una tabella Pivot", c:false},
   {t:"Solo se i dati contengono valori percentuali", c:false}
 ]},
 {mod:"5.2", t:"Cosa permette di fare l'opzione di 'espansione in avanti' della linea di tendenza?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Proiettare la tendenza per un certo numero di periodi futuri, ottenendo una previsione", c:true},
   {t:"Estendere automaticamente i dati di origine con valori casuali", c:false},
   {t:"Convertire la linea di tendenza in un grafico a torta", c:false},
   {t:"Eliminare i valori anomali dal grafico", c:false}
 ]},
 {mod:"5.3", t:"Quando il grafico a torta è poco adatto per rappresentare i dati?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Quando le categorie sono molte: la torta è più efficace con pochi valori distinti", c:true},
   {t:"Quando i dati contengono valori percentuali", c:false},
   {t:"Quando i dati sono già ordinati alfabeticamente", c:false},
   {t:"Non ci sono limiti, va bene con qualsiasi numero di categorie", c:false}
 ]},
 {mod:"6.1", t:"Da cosa deriva il nome 'tabella Pivot'?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Dal 'pivot', il giocatore che resta fermo al centro mentre gli altri campi ruotano intorno a lui nelle aree Righe/Colonne", c:true},
   {t:"Dal nome del primo sviluppatore che ha creato questo strumento in Excel", c:false},
   {t:"Dal fatto che si può ruotare graficamente di 90 gradi", c:false},
   {t:"È un acronimo inglese senza significato particolare", c:false}
 ]},
 {mod:"6.1", t:"Quale area di una tabella Pivot va tenuta 'ferma', facendo invece ruotare gli altri campi tra Righe e Colonne?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"L'area Valori", c:true},
   {t:"L'area Filtri", c:false},
   {t:"L'intestazione della tabella originale", c:false},
   {t:"Nessuna, tutte le aree sono equivalenti", c:false}
 ]},
 {mod:"6.2", t:"Cosa succede automaticamente se si trascina un campo Data nell'area Righe di una tabella Pivot, anche se i dati hanno una data specifica per ogni riga?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Excel raggruppa automaticamente per anno e trimestre (o altro periodo)", c:true},
   {t:"Excel restituisce un errore, perché servirebbe prima ordinare i dati", c:false},
   {t:"Nulla, resta sempre una riga per ogni data esatta", c:false},
   {t:"Excel elimina automaticamente le date duplicate", c:false}
 ]},
 {mod:"6.3", t:"Per modificare un grafico Pivot già creato, su cosa bisogna agire?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Sull'elenco campi, che riflette la tabella Pivot sottostante", c:true},
   {t:"Direttamente sul grafico, trascinando le barre con il mouse", c:false},
   {t:"Solo riscrivendo la formula della tabella Pivot", c:false},
   {t:"Sul foglio dati originale, cambiando l'ordine delle colonne", c:false}
 ]},
 {mod:"6.4", t:"Qual è la differenza tra un campo nell'area Filtri di una tabella Pivot e il controllo grafico 'Filtro dati'?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Il controllo 'Filtro dati' offre un'interfaccia visiva cliccabile e, tramite 'Connessioni rapporto', può filtrare più tabelle Pivot insieme", c:true},
   {t:"Sono esattamente la stessa cosa con un nome diverso", c:false},
   {t:"Il campo Filtro funziona solo su valori numerici", c:false},
   {t:"Il controllo 'Filtro dati' non può mai essere collegato a più tabelle", c:false}
 ]},
 {mod:"7.1", t:"Cosa si deve fare per poter riattivare il salvataggio automatico mentre si sta registrando una macro?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Cambiare il tipo di file in uno con attivazione macro (es. 'Cartella di lavoro con attivazione macro di Excel')", c:true},
   {t:"Interrompere e riavviare Excel", c:false},
   {t:"Non è possibile farlo finché la macro non è completata", c:false},
   {t:"Attivare l'opzione 'Usa riferimenti relativi'", c:false}
 ]},
 {mod:"7.2-7.3", t:"Da dove si crea un pulsante personalizzato nella barra multifunzione collegato a una macro già registrata?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"File &gt; Opzioni &gt; Personalizza barra multifunzione, scegliendo la categoria 'Macro'", c:true},
   {t:"Dalla scheda Inserisci, gruppo Illustrazioni", c:false},
   {t:"Solo modificando manualmente il codice VBA", c:false},
   {t:"Dalla Convalida dati, scegliendo 'Consenti: Macro'", c:false}
 ]},
 {mod:"8.1", t:"Dopo aver estratto un elenco con una formula (es. UNICI), perché può convenire copiarlo e incollarlo come 'solo valori'?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Per svincolare i risultati dalla formula e dal collegamento in tempo reale alla tabella di origine", c:true},
   {t:"Perché altrimenti Excel non permette di aggiungere altre colonne", c:false},
   {t:"Per applicare automaticamente il formato Testo", c:false},
   {t:"Non è necessario, è solo un passaggio facoltativo senza motivo pratico", c:false}
 ]},
 {mod:"8.1", t:"Perché il CAP, pur essendo composto da cifre, va formattato come Testo e non come Numero?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"Perché non rappresenta un valore su cui fare calcoli matematici", c:true},
   {t:"Perché altrimenti occuperebbe troppo spazio nella cella", c:false},
   {t:"Perché il formato Numero non accetta più di 5 cifre", c:false},
   {t:"Perché deve sempre iniziare con uno zero", c:false}
 ]},
 {mod:"8.2-8.5", t:"Qual è il limite principale della funzione CERCA.VERT rispetto alla combinazione INDICE+CONFRONTA?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"CERCA.VERT cerca sempre e solo nella prima colonna della tabella/intervallo indicato", c:true},
   {t:"CERCA.VERT non funziona con le tabelle di Excel con nome", c:false},
   {t:"CERCA.VERT non supporta la corrispondenza esatta", c:false},
   {t:"CERCA.VERT funziona solo con valori numerici, mai con testo", c:false}
 ]},
 {mod:"8.2-8.5", t:"Cosa restituisce la funzione CONFRONTA, a differenza di INDICE?", opts:[
+  {t:"Non so rispondere", c:false},
   {t:"La posizione (indice) di un elemento cercato in un intervallo, non il valore stesso", c:true},
   {t:"Il valore esatto trovato nella cella cercata", c:false},
   {t:"Il numero totale di celle non vuote nell'intervallo", c:false},
