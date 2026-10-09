@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test di ingresso - Corso Excel, Outlook, Google Drive e AI</title>
+<style>
+:root{
+  --accent:#1E6F5C;
+  --amber:#C97B3D;
+  --bg:#F5F3EC;
+  --ink:#2B2B26;
+  --line:#D8D2C2;
+  --card:#FFFFFF;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Tahoma,sans-serif;line-height:1.5;}
+header{background:var(--accent);color:#fff;padding:28px 20px;text-align:center;}
+header h1{font-family:Georgia,"Iowan Old Style",serif;margin:0 0 6px 0;font-size:1.7em;}
+header p{margin:0;opacity:.9;font-size:.95em;}
+main{max-width:760px;margin:0 auto;padding:24px 16px 60px;}
+.intro{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--amber);padding:18px 20px;border-radius:6px;margin-bottom:24px;}
+.intro label{display:block;margin-top:10px;font-weight:600;font-size:.9em;}
+.intro input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:4px;font-size:1em;margin-top:4px;}
+.area-badge{display:inline-block;font-family:"Cascadia Code","Consolas",monospace;font-size:.72em;color:#fff;background:var(--accent);padding:2px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;}
+.qcard{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px 20px;margin-bottom:16px;}
+.qtext{font-family:Georgia,serif;font-size:1.08em;margin:0 0 12px 0;}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:5px;margin-bottom:8px;cursor:pointer;transition:background .15s;}
+.opt:hover{background:#FAF8F2;}
+.opt input{margin-top:3px;}
+.opt.selected{border-color:var(--accent);background:#EAF3F0;}
+#submitBtn{display:block;width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:6px;font-size:1.05em;font-weight:600;cursor:pointer;margin-top:10px;}
+#submitBtn:hover{background:#175A4A;}
+#submitBtn:disabled{opacity:.6;cursor:default;}
+#result{display:none;background:var(--card);border:2px solid var(--accent);border-radius:8px;padding:22px;text-align:center;margin-top:20px;}
+#result h2{font-family:Georgia,serif;color:var(--accent);margin-top:0;}
+.progress{font-family:"Cascadia Code",monospace;font-size:.8em;color:#777;text-align:center;margin-bottom:14px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Test di ingresso</h1>
+</header>
+
+<main>
+  <div class="intro">
+    <p><strong>Istruzioni:</strong> questo test serve solo a capire da dove partire con ciascun partecipante, per formare gruppi con un livello simile. Non è un esame: rispondi in base a quello che sai davvero oggi, va benissimo non sapere alcune risposte.</p>
+    <label for="nome">Nome e cognome</label>
+    <input type="text" id="nome" placeholder="Il tuo nome">
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="nome@esempio.it">
+  </div>
+
+  <div class="progress" id="progress"></div>
+  <form id="quizForm"></form>
+  <button id="submitBtn" type="button">Invia i risultati</button>
+
+  <div id="result">
+    <h2>Grazie!</h2>
+    <div id="resultMsg"></div>
+  </div>
+</main>
+
+<script>
+const QUESTIONS = [
+// --- EXCEL (5) ---
+{area:"Excel", t:"Per inserire una formula in una cella di Excel, con quale carattere si inizia a digitare?", opts:[
+  {t:"Con il simbolo =", c:true},
+  {t:"Con il simbolo #", c:false},
+  {t:"Con il simbolo @", c:false},
+  {t:"Non serve nessun simbolo particolare", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Excel", t:"A cosa serve la funzione SOMMA in Excel?", opts:[
+  {t:"A sommare i valori di un gruppo di celle", c:true},
+  {t:"A contare quante celle sono vuote", c:false},
+  {t:"A ordinare i dati dal più grande al più piccolo", c:false},
+  {t:"A unire il testo di due celle", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Excel", t:"Cosa permette di fare un filtro applicato a una colonna di dati?", opts:[
+  {t:"Mostrare solo le righe che rispettano un certo criterio, nascondendo le altre", c:false},
+  {t:"Eliminare definitivamente i dati che non interessano", c:false},
+  {t:"Mostrare solo le righe che rispettano un criterio, senza cancellare nulla", c:true},
+  {t:"Cambiare colore automaticamente a tutte le celle", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Excel", t:"Per selezionare velocemente un intervallo di celle adiacenti, cosa si può fare?", opts:[
+  {t:"Cliccare sulla prima cella e trascinare tenendo premuto il mouse fino all'ultima", c:true},
+  {t:"È necessario selezionare ogni cella una alla volta con click separati", c:false},
+  {t:"Si può selezionare solo una riga alla volta, mai più celle insieme", c:false},
+  {t:"Serve sempre una formula per selezionare più celle", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Excel", t:"Cosa cambia, concretamente, se trasformo un semplice intervallo di celle in una vera Tabella di Excel (con Ctrl+T)?", opts:[
+  {t:"Compaiono filtri automatici nelle intestazioni e la tabella si allarga da sola aggiungendo righe", c:true},
+  {t:"Non cambia nulla, è solo un modo diverso di colorare le celle", c:false},
+  {t:"I dati diventano protetti da password automaticamente", c:false},
+  {t:"Le formule smettono di funzionare finché non si riconverte in intervallo normale", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Excel", t:"Quando conviene scegliere un grafico a barre invece di un grafico a torta?", opts:[
+  {t:"Quando le categorie da confrontare sono molte, perché la torta diventa poco leggibile", c:true},
+  {t:"Sempre, il grafico a torta non va mai usato", c:false},
+  {t:"Solo quando i dati contengono numeri negativi", c:false},
+  {t:"Non fa differenza, sono due modi identici di mostrare gli stessi dati", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Excel", t:"A cosa serve principalmente una Tabella Pivot in Excel?", opts:[
+  {t:"A raggruppare e riassumere grandi quantità di dati (es. totali per categoria) senza scrivere formule complesse", c:true},
+  {t:"A correggere automaticamente gli errori di battitura nei dati", c:false},
+  {t:"A proteggere il file con una password", c:false},
+  {t:"A tradurre automaticamente i dati in un'altra lingua", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Excel", t:"Cos'è un Grafico Pivot?", opts:[
+  {t:"La rappresentazione grafica di una Tabella Pivot, collegata ai suoi stessi dati raggruppati", c:true},
+  {t:"Un grafico che ruota automaticamente ogni pochi secondi", c:false},
+  {t:"Un tipo di grafico utilizzabile solo nella versione a pagamento di Excel", c:false},
+  {t:"Un grafico che si crea solo partendo da un file vuoto, senza dati", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+// --- OUTLOOK 365 (5) ---
+{area:"Outlook 365", t:"In una email, a cosa serve il campo 'CC'?", opts:[
+  {t:"Ad aggiungere destinatari in copia, visibili a tutti gli altri destinatari", c:true},
+  {t:"Ad allegare un file alla email", c:false},
+  {t:"A programmare l'invio della email in un orario successivo", c:false},
+  {t:"A nascondere il mittente della email", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Outlook 365", t:"Come si allega un file a una email in Outlook?", opts:[
+  {t:"Con l'apposito pulsante 'Allega file' presente nella finestra del nuovo messaggio", c:true},
+  {t:"Scrivendo il nome del file nell'oggetto della email", c:false},
+  {t:"Non è possibile allegare file alle email", c:false},
+  {t:"Solo trascinando il file nella cartella Posta in arrivo", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Outlook 365", t:"A cosa serve principalmente il Calendario di Outlook?", opts:[
+  {t:"A scrivere e inviare le email", c:false},
+  {t:"A organizzare file e documenti condivisi", c:false},
+  {t:"A gestire appuntamenti, riunioni e inviti, con promemoria", c:true},
+  {t:"A salvare automaticamente una copia delle email inviate", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Outlook 365", t:"Cosa significa 'Rispondi a tutti' quando si risponde a una email?", opts:[
+  {t:"La risposta viene inviata solo al mittente originale", c:false},
+  {t:"La risposta viene inviata al mittente e a tutti gli altri destinatari/CC della email originale", c:true},
+  {t:"La email viene inoltrata a tutti i contatti della rubrica", c:false},
+  {t:"Si crea automaticamente un nuovo gruppo di contatti", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+// --- GOOGLE DRIVE (5) ---
+{area:"Google Drive", t:"Come si condivide un file di Google Drive con un collega?", opts:[
+  {t:"Si stampa il file e si consegna a mano", c:false},
+  {t:"Con il pulsante 'Condividi', inserendo l'email della persona e il livello di permesso", c:true},
+  {t:"Non è possibile condividere file su Google Drive", c:false},
+  {t:"Solo scaricando il file e inviandolo come allegato email", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Google Drive", t:"Qual è la differenza principale tra Google Documenti e Google Fogli?", opts:[
+  {t:"Documenti serve per testi/relazioni, Fogli serve per tabelle e calcoli (come Excel)", c:true},
+  {t:"Sono esattamente la stessa cosa con un nome diverso", c:false},
+  {t:"Documenti è a pagamento, Fogli è gratuito", c:false},
+  {t:"Fogli serve solo per creare presentazioni", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Google Drive", t:"Dove si trova un file che è stato eliminato per sbaglio da Google Drive?", opts:[
+  {t:"È perso per sempre, non è recuperabile", c:false},
+  {t:"Nel Cestino di Google Drive, da cui può essere ripristinato", c:true},
+  {t:"Viene inviato automaticamente via email al proprietario", c:false},
+  {t:"Si trova solo nella cartella Download del computer", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Google Drive", t:"Cosa succede se due persone modificano insieme, nello stesso momento, un documento condiviso su Google Drive?", opts:[
+  {t:"Il documento si blocca e nessuno dei due può più scrivere", c:false},
+  {t:"Entrambe vedono le modifiche dell'altra in tempo reale, mentre scrivono", c:true},
+  {t:"Si creano automaticamente due copie separate del file", c:false},
+  {t:"Solo chi ha aperto il file per primo può modificarlo", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+// --- INTELLIGENZA ARTIFICIALE (5) ---
+{area:"Intelligenza Artificiale", t:"Quale di questi è un uso pratico di un assistente AI nel lavoro di ufficio?", opts:[
+  {t:"Aiutare a scrivere la bozza di una email o riassumere un testo lungo", c:true},
+  {t:"Sostituire completamente qualsiasi controllo umano sui documenti", c:false},
+  {t:"Accedere automaticamente ai file del computer senza che nessuno lo chieda", c:false},
+  {t:"Installare da solo altri programmi sul computer", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Intelligenza Artificiale", t:"Cosa significa che un'intelligenza artificiale 'genera' un testo?", opts:[
+  {t:"Lo crea in tempo reale parola per parola, in base alla richiesta ricevuta", c:true},
+  {t:"Lo copia sempre identico da un sito internet", c:false},
+  {t:"Lo traduce automaticamente da un'altra lingua", c:false},
+  {t:"Lo stampa direttamente su carta", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Intelligenza Artificiale", t:"Perché è importante controllare sempre le risposte date da un'intelligenza artificiale?", opts:[
+  {t:"Perché può commettere errori o fornire informazioni imprecise, pur sembrando sicura di sé", c:true},
+  {t:"Non serve controllarle, sono sempre corrette al 100%", c:false},
+  {t:"Solo perché potrebbe essere scritta in una lingua diversa", c:false},
+  {t:"Serve solo a verificare la lunghezza del testo generato", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Intelligenza Artificiale", t:"Se chiedo a un'AI di scrivere una email per me, cosa conviene fare prima di inviarla?", opts:[
+  {t:"Inviarla subito così com'è, senza leggerla", c:false},
+  {t:"Rileggerla e correggerla se necessario, prima di inviarla", c:true},
+  {t:"Cancellarla sempre, perché un'AI non può scrivere email", c:false},
+  {t:"Farla tradurre in un'altra lingua prima di inviarla", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+// --- NETIQUETTE, SICUREZZA E PASSWORD (5) ---
+{area:"Netiquette e sicurezza", t:"Cosa si intende per 'netiquette' nell'uso della posta elettronica?", opts:[
+  {t:"L'insieme di regole di buona educazione e correttezza da seguire scrivendo email", c:true},
+  {t:"Un programma antivirus per la posta elettronica", c:false},
+  {t:"Il nome tecnico della rete internet aziendale", c:false},
+  {t:"Un tipo di allegato che si può inviare solo tra colleghi", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Netiquette e sicurezza", t:"Ricevi una email inaspettata che chiede con urgenza di cliccare un link per 'verificare la tua password'. Cosa conviene fare?", opts:[
+  {t:"Cliccare subito il link, viste le urgenza indicata nel messaggio", c:false},
+  {t:"Rispondere alla email con la propria password per sicurezza", c:false},
+  {t:"Diffidare, non cliccare il link e verificare l'autenticità del messaggio (è un possibile tentativo di phishing)", c:true},
+  {t:"Inoltrare la email a tutti i colleghi per avvisarli subito", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Netiquette e sicurezza", t:"Quale di queste è considerata una password sicura?", opts:[
+  {t:"123456", c:false},
+  {t:"Il proprio nome seguito dall'anno di nascita", c:false},
+  {t:"Una frase lunga, con lettere maiuscole/minuscole, numeri e simboli, diversa per ogni servizio", c:true},
+  {t:"La parola 'password' scritta al contrario", c:false},
+  {t:"Non so rispondere", c:false}
+]},
+{area:"Netiquette e sicurezza", t:"Quando condividi una cartella di Google Drive con permesso di 'Editor', cosa può fare chi la riceve?", opts:[
+  {t:"Può solo vedere i file, senza modificarli", c:false},
+  {t:"Può vedere, modificare e aggiungere file nella cartella condivisa", c:true},
+  {t:"Può solo commentare i file, senza aprirli", c:false},
+  {t:"Riceve automaticamente una copia della cartella sul proprio Drive", c:false},
+  {t:"Non so rispondere", c:false}
+]}
+];
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+const order = QUESTIONS.map((q,i)=>i);
+const form = document.getElementById('quizForm');
+document.getElementById('progress').textContent = QUESTIONS.length + ' domande';
+
+order.forEach((qi, idx)=>{
+  const q = QUESTIONS[qi];
+  const optOrder = shuffle(q.opts.map((o,i)=>i));
+  const card = document.createElement('div');
+  card.className = 'qcard';
+  card.innerHTML = `<div class="area-badge">${q.area}</div><p class="qtext">${idx+1}. ${q.t}</p>`;
+  optOrder.forEach(oi=>{
+    const opt = q.opts[oi];
+    const label = document.createElement('label');
+    label.className = 'opt';
+    label.innerHTML = `<input type="radio" name="q${qi}" value="${oi}"> <span>${opt.t}</span>`;
+    label.addEventListener('click', ()=>{
+      card.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+      label.classList.add('selected');
+    });
+    card.appendChild(label);
+  });
+  form.appendChild(card);
+});
+
+const DEST = 'gilbertorovai@gmail.com';
+const SHEET_URL = '';
+
+document.getElementById('submitBtn').addEventListener('click', async ()=>{
+  const nome = document.getElementById('nome').value.trim();
+  const emailVal = document.getElementById('email').value.trim();
+  if(!nome){
+    alert('Inserisci il tuo nome e cognome prima di inviare.');
+    document.getElementById('nome').focus();
+    return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)){
+    alert('Inserisci un indirizzo email valido prima di inviare.');
+    document.getElementById('email').focus();
+    return;
+  }
+  let correct = 0;
+  let righe = [];
+  let esiti = [];
+  let perArea = {};
+  let allAnswered = true;
+  order.forEach((qi, idx)=>{
+    const q = QUESTIONS[qi];
+    const sel = form.querySelector(`input[name="q${qi}"]:checked`);
+    if(!sel){ allAnswered = false; return; }
+    const chosen = q.opts[parseInt(sel.value)];
+    const isOk = chosen.c === true;
+    if(isOk) correct++;
+    esiti.push(isOk ? 1 : 0);
+    if(!perArea[q.area]) perArea[q.area] = {ok:0, tot:0};
+    perArea[q.area].tot++;
+    if(isOk) perArea[q.area].ok++;
+    righe.push((idx+1)+'. ['+q.area+'] '+(isOk?'CORRETTA':'ERRATA')+' - '+q.t+' => '+chosen.t);
+  });
+  if(!allAnswered){
+    alert('Rispondi a tutte le domande prima di inviare.');
+    return;
+  }
+  const total = QUESTIONS.length;
+  const pct = Math.round((correct/total)*100);
+  let livello = 'Principiante assoluto';
+  if(pct >= 75) livello = 'Base consolidata';
+  else if(pct >= 40) livello = 'Base iniziale';
+
+  let areaRiepilogo = Object.keys(perArea).map(a => a+': '+perArea[a].ok+'/'+perArea[a].tot).join(' | ');
+
+  const payload = {
+    _subject: 'Test ingresso corso Office/AI - ' + nome + ' - ' + correct + '/' + total,
+    _template: 'table',
+    nome: nome,
+    email: emailVal,
+    punteggio: correct + ' / ' + total + ' (' + pct + '%) - ' + livello,
+    riepilogo_aree: areaRiepilogo,
+    dettaglio: righe.join('\n')
+  };
+
+  if(SHEET_URL){
+    fetch(SHEET_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({ nome, email: emailVal, corrette: correct, totale: total, percentuale: pct, livello, perArea, esiti, dettaglio: payload.dettaglio })
+    }).catch(()=>{});
+  }
+
+  const btn = document.getElementById('submitBtn');
+  const box = document.getElementById('result');
+  const msg = document.getElementById('resultMsg');
+  btn.disabled = true;
+  btn.textContent = 'Invio in corso...';
+  try{
+    const r = await fetch('https://formsubmit.co/ajax/' + DEST, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    msg.textContent = 'Le tue risposte sono state inviate correttamente. Puoi chiudere questa pagina.';
+    btn.style.display = 'none';
+  }catch(e){
+    const body = 'Nome: ' + nome + '\nPunteggio: ' + payload.punteggio + '\nAree: ' + areaRiepilogo + '\n\n' + payload.dettaglio;
+    msg.innerHTML = 'Non sono riuscito a inviare automaticamente. <a href="mailto:' + DEST + '?subject=' + encodeURIComponent(payload._subject) + '&body=' + encodeURIComponent(body) + '">Clicca qui per inviare il risultato con il tuo programma di posta</a>.';
+    btn.disabled = false;
+    btn.textContent = 'Invia i risultati';
+  }
+  box.style.display = 'block';
+  box.scrollIntoView({behavior:'smooth'});
+});
+</script>
+
+</body>
+</html>
