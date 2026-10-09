@@ -338,25 +338,23 @@ document.getElementById('submitBtn').addEventListener('click', async ()=>{
   const btn = document.getElementById('submitBtn');
   const box = document.getElementById('result');
   const msg = document.getElementById('resultMsg');
-  btn.disabled = true;
-  btn.textContent = 'Invio in corso...';
-  try{
-    const r = await fetch('https://formsubmit.co/ajax/' + DEST, {
-      method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body: JSON.stringify(payload)
-    });
-    if(!r.ok) throw new Error('HTTP ' + r.status);
-    msg.textContent = 'Le tue risposte sono state inviate correttamente. Puoi chiudere questa pagina.';
-    btn.style.display = 'none';
-  }catch(e){
-    const body = 'Nome: ' + nome + '\nPunteggio: ' + payload.punteggio + '\nAree: ' + areaRiepilogo + '\n\n' + payload.dettaglio;
-    msg.innerHTML = 'Non sono riuscito a inviare automaticamente. <a href="mailto:' + DEST + '?subject=' + encodeURIComponent(payload._subject) + '&body=' + encodeURIComponent(body) + '">Clicca qui per inviare il risultato con il tuo programma di posta</a>.';
-    btn.disabled = false;
-    btn.textContent = 'Invia i risultati';
-  }
+
+  // Mostra subito la conferma: l'invio prosegue in background, senza far attendere il partecipante.
+  btn.style.display = 'none';
+  msg.textContent = 'Grazie, le tue risposte sono state registrate. Puoi chiudere questa pagina.';
   box.style.display = 'block';
   box.scrollIntoView({behavior:'smooth'});
+
+  fetch('https://formsubmit.co/ajax/' + DEST, {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body: JSON.stringify(payload)
+  }).then(r=>{
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+  }).catch(()=>{
+    const body = 'Nome: ' + nome + '\nPunteggio: ' + payload.punteggio + '\nAree: ' + areaRiepilogo + '\n\n' + payload.dettaglio;
+    msg.innerHTML = 'L\'invio automatico non è riuscito. <a href="mailto:' + DEST + '?subject=' + encodeURIComponent(payload._subject) + '&body=' + encodeURIComponent(body) + '">Clicca qui per inviare il risultato con il tuo programma di posta</a>.';
+  });
 });
 </script>
 
